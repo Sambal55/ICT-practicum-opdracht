@@ -2,46 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!--    aframe-->
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <!--    Enviroment-->
     <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
-
+    <!--    physics-->
+    <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
+    <!--    extras -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
     <script src="js/script.js"></script>
-    <title>Title</title>
+    <title>ICT-opdracht</title>
 </head>
 <body>
-<a-scene physics="gravity: -9.8" cursor="rayOrigin: mouse" vr-mode-ui="enabled: true">
+<a-scene physics="gravity: -9.8; debug: true">
     <!-- Omgeving -->
     <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
-    <!-- Camera + Teleport -->
-    <a-entity id="rig" movement-controls position="0 1.6 0">
-        <a-entity camera look-controls wasd-controls></a-entity>
-        <a-entity laser-controls="hand: right" raycaster="objects: .clickable" teleport-controls="button: trigger; collisionEntities: .floor"></a-entity>
+
+
+    <!--    ondersteuning voor quest - joystick controls-->
+    <a-entity id="rig" position="0 1.6 0">
+        <a-entity camera look-controls wasd-controls position="0 1.6 0">
+            <a-entity id="ctlR"
+                      pickup-box
+                      position="0 1.2 -0.5"
+                      raycaster="objects: .cube; far: 5; showLine: true; lineColor: red"
+                      meta-touch-controls="hand: right">
+            </a-entity>
+            <a-entity id="ctlL"
+                      position="-2 1.2 -0.5"
+                      pickup-box
+                      raycaster="objects: .cube; far: 5; showLine: true; lineColor: green"
+                      meta-touch-controls="hand: left">
+            </a-entity>
+        </a-entity>
     </a-entity>
 
-    <!-- Vloer -->
-    <a-box class="floor" position="0 0 -5" width="20" height="0.1" depth="20" color="#ccc" static-body></a-box>
 
-    <!-- Interactief blok -->
-    <a-box position="0 1 -3" color="#4CAF50" depth="0.5" height="0.5" width="0.5"
-           grabbable stretchable draggable dynamic-body></a-box>
+    <a-plane position="0 1 0"
+             rotation="-90 0 0"
+             width="20"
+             height="20"
+             static-body
+             color="#7BC8A4">
+    </a-plane>
 
-    <!-- Deur die opent -->
-    <a-box id="door" position="2 1 -4" color="#795548" depth="0.1" height="2" width="1"
-           class="clickable"
-           event-set__click="_event: click; _target: #door; rotation: 0 90 0"></a-box>
+    <a-box class="movingObject" dynamic-body="mass: 10;" position="0 3 -3"
+           rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>
+    <a-box class="movingObject" dynamic-body="mass: 100" position="-1 10.25 -3"
+           width="0.5" rotation="30 3 20"
+           height="0.5" depth="0.5" color="green"></a-box>
+    <a-box class="movingObject" dynamic-body position="1 10.25 -3" width="0.5" height="0.5"
+           depth="0.5"
+           color="blue"></a-box>
+    <a-box class="movingObject" dynamic-body position="0 0 -2" width="0.5" height="0.5" depth="0.5"
+           color="blue"></a-box>
 
-    <!-- Autonoom bewegend platform -->
-    <a-box id="platform" position="-2 0.5 -4" color="#2196F3" depth="2" height="0.2" width="2"
-           animation="property: position; to: -2 1.5 -4; dir: alternate; dur: 3000; loop: true"></a-box>
-
-    <!-- Scorebord -->
-    <a-text value="Score: 0" position="0 2 -2" color="#000" id="scoreText"></a-text>
-
-    <!-- Interactieve bal -->
-    <a-sphere position="1 1 -3" radius="0.3" color="#FF5722"
-              grabbable dynamic-body
-              event-set__grab="_event: grab-start; _target: #scoreText; text: value: Score: 1"></a-sphere>
+    <a-cylinder class="cylinder" dynamic-body="mass:100" position="2 3 -4"
+                color="yellow"></a-cylinder>
+    <a-box class="movingObject" dynamic-body="mass: 100" position="1 2 -3.2" rotation="0 0 0"
+           color="#4CC3D9"></a-box>
+    <a-box class="movingObject" dynamic-body="mass: 100" position="-1 2 -3" rotation="0 0 0"
+           color="#4CC3D9"></a-box>
+    <a-plane class="movingObject"
+             position="-4 4 -4"
+             rotation="-90 0 0"
+             width="2"
+             height="2"
+             dynamic-body="mass: 100"
+             color="pink"></a-plane>
 </a-scene>
 </body>
 </html>
