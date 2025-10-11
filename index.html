@@ -153,11 +153,11 @@
 
     <!-- Debug text voor in-world feedback -->
     <a-entity id="debugText" position="0 1.7 -1.5"
-              text="value: Ready. Use pinch; color: yellow; align: center; width: 2;">
+              text="value: NA DEES IS HET ECHT KLAAR; color: yellow; align: center; width: 2;">
     </a-entity>
 
     <!-- Camera rig -->
-    <a-entity id="rig" position="0 1.6 0">
+    <a-entity id="rig">
         <a-entity camera look-controls></a-entity>
     </a-entity>
 
@@ -181,7 +181,7 @@
 
     <!-- Pickup objects: class .pickup (sphere-collider zoekt deze), hoverable & grabbable from super-hands, dynamic-body for physics -->
     <a-box class="pickup"
-           position="0 1.2 -1.8"
+           position="0 1.2 -0.3"
            width="0.4" height="0.4" depth="0.4"
            color="red"
            hoverable
@@ -190,7 +190,7 @@
     </a-box>
 
     <a-box class="pickup"
-           position="0.8 1.2 -2.2"
+           position="0.8 1.2 -0.3"
            width="0.4" height="0.4" depth="0.4"
            color="green"
            hoverable
@@ -199,7 +199,7 @@
     </a-box>
 
     <a-cylinder class="pickup"
-                position="-0.8 1.2 -2.2"
+                position="-0.8 1.2 -0.3"
                 radius="0.25" height="0.4"
                 color="yellow"
                 hoverable
