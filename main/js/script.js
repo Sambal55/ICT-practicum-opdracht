@@ -51,3 +51,22 @@ AFRAME.registerComponent('hover-color', {
     }
 });
 
+
+AFRAME.registerComponent('hand-grab-debug', {
+    init: function () {
+        const statusText = document.querySelector('#statusText');
+
+        this.el.addEventListener('grab-start', (evt) => {
+            const grabbedEl = evt.detail.el;
+            console.log('Grabbed:', grabbedEl.id || grabbedEl.tagName);
+            statusText.setAttribute('text', 'value', `Grabbed: ${grabbedEl.id || grabbedEl.tagName}`);
+        });
+
+        this.el.addEventListener('grab-end', (evt) => {
+            const releasedEl = evt.detail.el;
+            console.log('Released:', releasedEl.id || releasedEl.tagName);
+            statusText.setAttribute('text', 'value', `Released: ${releasedEl.id || releasedEl.tagName}`);
+        });
+    }
+});
+
