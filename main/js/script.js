@@ -39,3 +39,44 @@ AFRAME.registerComponent('pinch-debug', {
         });
     }
 });
+
+
+AFRAME.registerComponent("pinch-detector", {
+    schema: { hand: { type: "string" } },
+    init: function () {
+        this.pinchActive = false;
+        this.debugText = document.createElement("a-text");
+        this.debugText.setAttribute("color", "yellow");
+        this.debugText.setAttribute("align", "center");
+        this.debugText.setAttribute("value", `Hand: ${this.data.hand} ready`);
+        this.debugText.setAttribute("position", this.data.hand === "left" ? "-0.3 -0.3 -1" : "0.3 -0.3 -1");
+        this.el.sceneEl.camera.el.appendChild(this.debugText);
+    },
+    tick: function () {
+        const xrSession = this.el.sceneEl.renderer.xr.getSession();
+        if (!xrSession) return;
+
+        const handInput = Array.from(xrSession.inputSources).find(
+            (s) => s.hand && s.handedness === this.data.hand
+        );
+        if (!handInput) return;
+
+        const indexTip = handInput.hand.get("index-finger-tip");
+        const thumbTip = handInput.hand.get("thumb-tip");
+        if (!indexTip || !thumbTip) return;
+
+        const indexPos = new THREE.Vector3().fromArray(indexTip.transform.position);
+        const thumbPos = new THREE.Vector3().fromArray(thumbTip.transform.position);
+        const dist = indexPos.distanceTo(thumbPos);
+
+        const isPinching = dist < 0.02; // kleiner dan 2 cm → pinch
+
+        if (isPinching && !this.pinchActive) {
+            this.pinchActive = true;
+            this.debugText.setAttribute("value", `🤏 Pinch started (${this.data.hand})`);
+        } else if (!isPinching && this.pinchActive) {
+            this.pinchActive = false;
+            this.debugText.setAttribute("value", `👋 Pinch ended (${this.data.hand})`);
+        }
+    },
+});
