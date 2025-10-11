@@ -73,7 +73,7 @@ AFRAME.registerComponent('hover-color', {
 });
 
 
-AFRAME.registerComponent('hand-grab-debug', {
+AFRAME.registerComponent('grab-debug', {
     init: function () {
         const statusText = document.querySelector('#statusText');
 
