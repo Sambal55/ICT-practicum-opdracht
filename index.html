@@ -133,16 +133,17 @@
     <!-- Omgeving -->
     <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
 
-    <!-- Camera rig -->
-    <a-entity id="rig" position="0 1.6 0">
-        <a-entity camera look-controls position="0 1.6 0">
-            <!-- Statische status tekst in VR -->
+    <!-- Camera rig (geen vaste hoogte meer) -->
+    <a-entity id="rig" movement-controls>
+        <a-entity camera look-controls wasd-controls-enabled="false">
+            <!-- Tekst feedback -->
             <a-entity id="statusText"
                       position="0 -0.3 -1"
                       text="value: Ready; color: yellow; align: center; width: 2;">
             </a-entity>
         </a-entity>
     </a-entity>
+
 
     <!-- Hand tracking met pinch-grab -->
     <a-entity id="leftHand"
@@ -156,6 +157,7 @@
               super-hands="colliderEvent: pinchstarted; colliderEventEnd: pinchended; grabStartButtons: pinchstarted; grabEndButtons: pinchended;"
               pinch-logger="hand: right">
     </a-entity>
+
 
     <!-- Grondvlak -->
     <a-plane position="0 1 0"
