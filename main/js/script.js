@@ -91,16 +91,3 @@ AFRAME.registerComponent('grab-debug', {
     }
 });
 
-AFRAME.registerComponent('hover-debug', {
-    init: function () {
-        const statusText = document.querySelector('#statusText');
-        this.el.addEventListener('hover-start', () => {
-            statusText.setAttribute('text', 'value', `Hovering: ${this.el.id || this.el.tagName}`);
-        });
-        this.el.addEventListener('hover-end', () => {
-            statusText.setAttribute('text', 'value', `Stopped hovering: ${this.el.id || this.el.tagName}`);
-        });
-    }
-});
-
-
