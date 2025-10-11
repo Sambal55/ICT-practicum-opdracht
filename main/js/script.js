@@ -48,6 +48,16 @@ AFRAME.registerComponent('hover-color', {
         this.el.addEventListener('raycaster-intersected-cleared', () => {
             this.el.setAttribute('color', this.data.original);
         });
+        this.el.addEventListener('grab-start', (evt) => {
+            const grabbedEl = evt.detail.el;
+            grabbedEl.setAttribute('color', 'orange'); // object is vast
+        });
+
+        this.el.addEventListener('grab-end', (evt) => {
+            const releasedEl = evt.detail.el;
+            releasedEl.setAttribute('color', releasedEl.getAttribute('hover-color').original); // terug naar origineel
+        });
+
     }
 });
 
