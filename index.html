@@ -22,7 +22,8 @@
 
 <body>
 <a-scene environment="preset: forest; groundColor: #445; grid: cross"
-         physics="gravity: -9.8; debug: true">
+         physics="gravity: -9.8; debug: true"
+         vr-mode-ui="enabled: true">
 
     <!-- Camera rig -->
     <a-entity id="rig" position="0 1.6 0">
@@ -39,16 +40,15 @@
 
     <!-- Handen met pinch-detectie en super-hands -->
     <a-entity id="leftHand"
-              hand-tracking-controls="hand: left"
+              hand-tracking-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
               super-hands
-              pinch-detector="hand: left">
-    </a-entity>
+              pinch-detector="hand: left"></a-entity>
 
     <a-entity id="rightHand"
-              hand-tracking-controls="hand: right"
+              hand-tracking-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
               super-hands
-              pinch-detector="hand: right">
-    </a-entity>
+              pinch-detector="hand: right"></a-entity>
+
 
     <!-- Grondvlak -->
     <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" static-body color="#7BC8A4"></a-plane>
