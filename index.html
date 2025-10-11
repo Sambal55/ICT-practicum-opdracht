@@ -1,9 +1,115 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>ICT-opdracht</title>-->
+
+<!--    &lt;!&ndash; A-Frame &ndash;&gt;-->
+<!--    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>-->
+
+<!--    &lt;!&ndash; Environment &ndash;&gt;-->
+<!--    <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>-->
+
+<!--    &lt;!&ndash; Physics &ndash;&gt;-->
+<!--    <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>-->
+
+<!--    &lt;!&ndash; Extras &ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>-->
+
+<!--    &lt;!&ndash; Hand tracking &ndash;&gt;-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/@c-frame/hand-tracking-controls@latest/dist/hand-tracking-controls.min.js"></script>-->
+
+<!--    &lt;!&ndash; Custom script &ndash;&gt;-->
+<!--    <script src="js/script.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<a-scene physics="gravity: -9.8; debug: true" obb-collider="showColliders: true" vr-mode-ui="enabled: true">-->
+
+<!--    &lt;!&ndash; Omgeving &ndash;&gt;-->
+<!--    <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>-->
+
+<!--    &lt;!&ndash; Hand tracking met zichtbare handen en ray &ndash;&gt;-->
+
+<!--&lt;!&ndash;    <a-entity id="leftHand"&ndash;&gt;-->
+<!--&lt;!&ndash;              hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"&ndash;&gt;-->
+<!--&lt;!&ndash;              hand-tracking-controls="hand: left;"&ndash;&gt;-->
+<!--&lt;!&ndash;              hand-tracking-grab-controls="hand: left;">&ndash;&gt;-->
+<!--&lt;!&ndash;    </a-entity>&ndash;&gt;-->
+<!--&lt;!&ndash;    <a-entity id="rightHand"&ndash;&gt;-->
+<!--&lt;!&ndash;              hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"&ndash;&gt;-->
+<!--&lt;!&ndash;              hand-tracking-controls="hand: right;"&ndash;&gt;-->
+<!--&lt;!&ndash;              hand-tracking-grab-controls="hand: right;"></a-entity>&ndash;&gt;-->
+
+<!--    <a-entity id="leftHand"-->
+<!--              hand-tracking-controls="hand: left"-->
+<!--              pinch-detector="hand: left">-->
+<!--    </a-entity>-->
+
+<!--    <a-entity id="rightHand"-->
+<!--              hand-tracking-controls="hand: right"-->
+<!--              pinch-detector="hand: right">-->
+<!--    </a-entity>-->
+
+
+<!--    &lt;!&ndash; Ondersteuning voor Quest - joystick controls &ndash;&gt;-->
+<!--    <a-entity id="rig" position="0 1.6 0">-->
+<!--        <a-entity camera look-controls position="0 1.6 0">-->
+<!--            <a-entity id="ctlR"-->
+<!--                      raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: red"-->
+<!--                      meta-touch-controls="hand: right">-->
+<!--            </a-entity>-->
+<!--            <a-entity id="ctlL"-->
+<!--                      raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: green"-->
+<!--                      meta-touch-controls="hand: left">-->
+<!--            </a-entity>-->
+<!--        </a-entity>-->
+<!--    </a-entity>-->
+
+<!--    &lt;!&ndash; Grondvlak (niet grijpbaar) &ndash;&gt;-->
+<!--    <a-plane position="0 1 0"-->
+<!--             rotation="-90 0 0"-->
+<!--             width="20"-->
+<!--             height="20"-->
+<!--             static-body-->
+<!--             color="#7BC8A4">-->
+<!--    </a-plane>-->
+
+<!--    &lt;!&ndash; Interactieve objecten &ndash;&gt;-->
+<!--    <a-box grabbable dynamic-body="mass: 10" position="0 3 -3"-->
+<!--           rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>-->
+
+<!--    <a-box grabbable dynamic-body="mass: 100" position="-1 10.25 -3"-->
+<!--           rotation="30 3 20" width="0.5" height="0.5" depth="0.5" color="green"></a-box>-->
+
+<!--    <a-box grabbable dynamic-body position="1 10.25 -3"-->
+<!--           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>-->
+
+<!--    <a-box grabbable dynamic-body position="0 0 -2"-->
+<!--           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>-->
+
+<!--    <a-cylinder grabbable dynamic-body="mass:100" position="2 3 -4"-->
+<!--                radius="0.25" height="0.5" color="yellow"></a-cylinder>-->
+
+<!--    <a-box grabbable dynamic-body="mass: 100" position="1 2 -3.2"-->
+<!--           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>-->
+
+<!--    <a-box grabbable dynamic-body="mass: 100" position="-1 2 -3"-->
+<!--           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>-->
+
+<!--    <a-plane grabbable dynamic-body="mass: 100" position="-4 4 -4"-->
+<!--             rotation="-90 0 0" width="2" height="2" color="pink"></a-plane>-->
+
+<!--</a-scene>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <title>VR Hands - KIWI</title>
-
+    <meta charset="UTF-8">
+    <title>Hand Tracking Demo - KIWI</title>
+    <script src="./main/js/script.js"></script>
     <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
@@ -13,83 +119,79 @@
     <!-- Physics -->
     <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
 
-    <!-- Super-hands -->
+    <!-- Superhands (voor grijpen met pinch) -->
     <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.4/dist/super-hands.min.js"></script>
 
-    <!-- Pinch detector -->
-    <script>
-        AFRAME.registerComponent("pinch-detector", {
-            schema: { hand: { type: "string" } },
-            init: function () {
-                this.pinchActive = false;
-                this.debugText = document.getElementById("debugText");
-            },
-            tick: function () {
-                const xrSession = this.el.sceneEl.renderer.xr.getSession();
-                if (!xrSession) return;
-
-                const handInput = Array.from(xrSession.inputSources).find(
-                    s => s.hand && s.handedness === this.data.hand
-                );
-                if (!handInput) return;
-
-                const indexTip = handInput.hand.get("index-finger-tip");
-                const thumbTip = handInput.hand.get("thumb-tip");
-                if (!indexTip || !thumbTip) return;
-
-                const indexPos = new THREE.Vector3().fromArray(indexTip.transform.position);
-                const thumbPos = new THREE.Vector3().fromArray(thumbTip.transform.position);
-                const dist = indexPos.distanceTo(thumbPos);
-
-                const isPinching = dist < 0.025;
-
-                if (isPinching && !this.pinchActive) {
-                    this.pinchActive = true;
-                    if (this.debugText) this.debugText.setAttribute("value", `🤏 Pinch started (${this.data.hand})`);
-                } else if (!isPinching && this.pinchActive) {
-                    this.pinchActive = false;
-                    if (this.debugText) this.debugText.setAttribute("value", `👋 Pinch ended (${this.data.hand})`);
-                }
-            }
-        });
-    </script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+    </style>
 </head>
 
 <body>
-<a-scene environment="preset: forest; groundColor: #445; grid: cross"
-         physics="gravity: -9.8; debug: true"
-         vr-mode-ui="enabled: true">
+<a-scene physics="gravity: -9.8; debug: false" vr-mode-ui="enabled: true" background="color: #ECECEC">
 
-    <!-- Camera rig -->
-    <a-entity id="rig" position="0 1.6 0">
-        <a-entity camera look-controls>
-            <a-text id="debugText" value="Ready" color="yellow" align="center" position="0 -0.3 -1" width="3"></a-text>
+    <!-- Omgeving -->
+    <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
+
+    <!-- Camera rig (geen vaste hoogte meer) -->
+    <a-entity id="rig" movement-controls>
+        <a-entity camera look-controls wasd-controls-enabled="false">
+            <!-- Tekst feedback -->
+            <a-entity id="statusText"
+                      position="0 -0.3 -1"
+                      text="value: Ready; color: yellow; align: center; width: 2;">
+            </a-entity>
         </a-entity>
     </a-entity>
 
-    <!-- Handen met zichtbare modellen, pinch-detectie en super-hands -->
+
+    <!-- Hand tracking met pinch-grab -->
     <a-entity id="leftHand"
-              hand-tracking-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
-              super-hands
-              pinch-detector="hand: left"></a-entity>
+              hand-tracking-controls="hand: left"
+              super-hands="colliderEvent: pinchstarted; colliderEventEnd: pinchended; grabStartButtons: pinchstarted; grabEndButtons: pinchended;"
+              pinch-logger="hand: left">
+    </a-entity>
 
     <a-entity id="rightHand"
-              hand-tracking-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
-              super-hands
-              pinch-detector="hand: right"></a-entity>
+              hand-tracking-controls="hand: right"
+              super-hands="colliderEvent: pinchstarted; colliderEventEnd: pinchended; grabStartButtons: pinchstarted; grabEndButtons: pinchended;"
+              pinch-logger="hand: right">
+    </a-entity>
+
 
     <!-- Grondvlak -->
-    <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" static-body color="#7BC8A4"></a-plane>
+    <a-plane position="0 1 0"
+             rotation="-90 0 0"
+             width="20"
+             height="20"
+             static-body
+             color="#7BC8A4">
+    </a-plane>
 
-    <!-- Dynamische objecten -->
-    <a-box grabbable dynamic-body="mass: 10" position="0 3 -3" rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>
-    <a-box grabbable dynamic-body="mass: 100" position="-1 10.25 -3" rotation="30 3 20" width="0.5" height="0.5" depth="0.5" color="green"></a-box>
-    <a-box grabbable dynamic-body position="1 10.25 -3" width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
-    <a-box grabbable dynamic-body position="0 0 -2" width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
-    <a-cylinder grabbable dynamic-body="mass:100" position="2 3 -4" radius="0.25" height="0.5" color="yellow"></a-cylinder>
-    <a-box grabbable dynamic-body="mass: 100" position="1 2 -3.2" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
-    <a-box grabbable dynamic-body="mass: 100" position="-1 2 -3" rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
-    <a-plane grabbable dynamic-body="mass: 100" position="-4 4 -4" rotation="-90 0 0" width="2" height="2" color="pink"></a-plane>
+    <!-- Interactieve objecten -->
+    <a-box grabbable dynamic-body="mass: 10" position="0 3 -3"
+           rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>
+
+    <a-box grabbable dynamic-body="mass: 100" position="-1 10.25 -3"
+           rotation="30 3 20" width="0.5" height="0.5" depth="0.5" color="green"></a-box>
+
+    <a-box grabbable dynamic-body position="1 10.25 -3"
+           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
+
+    <a-box grabbable dynamic-body position="0 0 -2"
+           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
+
+    <a-cylinder grabbable dynamic-body="mass:100" position="2 3 -4"
+                radius="0.25" height="0.5" color="yellow"></a-cylinder>
+
+    <a-box grabbable dynamic-body="mass: 100" position="1 2 -3.2"
+           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
+
+    <a-box grabbable dynamic-body="mass: 100" position="-1 2 -3"
+           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
+
+    <a-plane grabbable dynamic-body="mass: 100" position="-4 4 -4"
+             rotation="-90 0 0" width="2" height="2" color="pink"></a-plane>
 
 </a-scene>
 </body>
