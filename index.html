@@ -1,199 +1,125 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>ICT-practicum</title>-->
-<!--    &lt;!&ndash; A-Frame &ndash;&gt;-->
-<!--    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>-->
-<!--    &lt;!&ndash;    Workaround voor super hands&ndash;&gt;-->
-<!--    <script>-->
-<!--        delete AFRAME.components["grabbable"];-->
-<!--    </script>-->
-<!--    &lt;!&ndash; Environment &ndash;&gt;-->
-<!--    <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>-->
-
-<!--    &lt;!&ndash; A-Frame Event System &ndash;&gt;-->
-<!--    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>-->
-
-<!--    &lt;!&ndash; Physics &ndash;&gt;-->
-<!--    <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>-->
-<!--    &lt;!&ndash; A-Frame Physics Extra Add-On &ndash;&gt;-->
-<!--    <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>-->
-
-<!--    &lt;!&ndash;    extras &ndash;&gt;-->
-<!--    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>-->
-<!--    &lt;!&ndash; Superhands (voor grijpen met pinch) &ndash;&gt;-->
-<!--    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>-->
-<!--    <script src="https://unpkg.com/super-hands@^3.0.5/dist/super-hands.min.js"></script>-->
-
-<!--    <script src="./main/js/script.js"></script>-->
-
-<!--</head>-->
-
-<!--<body>-->
-<!--<a-scene physics="gravity: -9.8; debug: false" vr-mode-ui="enabled: true" background="color: #ECECEC">-->
-
-<!--    &lt;!&ndash; Omgeving &ndash;&gt;-->
-<!--    <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>-->
-
-<!--    &lt;!&ndash; Camera rig (geen vaste hoogte meer) &ndash;&gt;-->
-<!--    <a-entity id="rig" movement-controls>-->
-<!--        <a-entity camera look-controls wasd-controls-enabled="false">-->
-<!--            <a-entity id="statusText"-->
-<!--                      position="0 -0.3 -1"-->
-<!--                      text="value: maat ik geef t op; color: yellow; align: center; width: 2;">-->
-<!--            </a-entity>-->
-<!--        </a-entity>-->
-<!--    </a-entity>-->
-
-
-<!--    &lt;!&ndash; Hand tracking met pinch-grab &ndash;&gt;-->
-<!--    <a-entity id="leftHand" hand-tracking-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"-->
-<!--              super-hands="grabStartButtons: pinchstarted; grabEndButtons: pinchended"-->
-<!--              pinch-logger="hand: left"-->
-<!--              hand-grab-debug-->
-<!--              static-body>-->
-<!--        <a-entity position="0 0 -0.05"-->
-<!--                  raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: red"-->
-<!--                  line="color: red"></a-entity>-->
-<!--    </a-entity>-->
-
-
-<!--    <a-entity id="rightHand"-->
-<!--              hand-tracking-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"-->
-<!--              super-hands="grabStartButtons: pinchstarted; grabEndButtons: pinchended"-->
-<!--              pinch-logger="hand: right"-->
-<!--              hand-grab-debug-->
-<!--              static-body>-->
-<!--        <a-entity position="0 0 -0.05"-->
-<!--                  raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: green"-->
-<!--                  line="color: green"></a-entity>-->
-<!--    </a-entity>-->
-
-
-<!--    &lt;!&ndash; Grondvlak &ndash;&gt;-->
-<!--    <a-plane position="0 1 0"-->
-<!--             rotation="-90 0 0"-->
-<!--             width="20"-->
-<!--             height="20"-->
-<!--             static-body-->
-<!--             color="#7BC8A4">-->
-<!--    </a-plane>-->
-
-<!--    &lt;!&ndash; Interactieve objecten &ndash;&gt;-->
-<!--    <a-box hoverable grabbable draggable droppable hover-color="color: pink; original: green"-->
-<!--           grab-debug-->
-<!--           dynamic-body="mass: 10" position="0 3 -3"-->
-<!--           rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>-->
-
-<!--    <a-box hoverable-->
-<!--           grab-debug-->
-<!--           grabbable draggable droppable hover-color="color: pink; original: green"-->
-<!--           dynamic-body="mass: 10" position="-1 10.25 -3"-->
-<!--           rotation="30 3 20" width="0.5" height="0.5" depth="0.5" color="green"></a-box>-->
-
-<!--    <a-box hoverable-->
-<!--           grab-debug-->
-<!--           grabbable draggable droppable hover-color="color: pink; original: green"-->
-<!--           dynamic-body="mass: 10" position="1 10.25 -3"-->
-<!--           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>-->
-
-<!--    <a-box hoverable grab-debug grabbable draggable droppable-->
-<!--           hover-color="color: pink; original: green"-->
-<!--           dynamic-body="mass: 10" position="0 0 -2"-->
-<!--           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>-->
-
-<!--    <a-cylinder grab-debug hover-color="color: pink; original: green"-->
-<!--                hoverable grabbable draggable droppable dynamic-body="mass: 10" position="2 3 -4"-->
-<!--                radius="0.25" height="0.5" color="yellow"></a-cylinder>-->
-
-<!--    <a-box grab-debug hoverable grabbable draggable droppable hover-color="color: pink; original: green"-->
-<!--           dynamic-body="mass: 10" position="1 2 -3.2"-->
-<!--           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>-->
-
-<!--    <a-box grab-debug hoverable grabbable draggable droppable hover-color="color: pink; original: green"-->
-<!--           dynamic-body="mass: 10" position="-1 2 -3"-->
-<!--           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>-->
-
-<!--    <a-plane grab-debug hoverable grabbable draggable droppable hover-color="color: pink; original: green"-->
-<!--             dynamic-body="mass: 10" position="-4 4 -4"-->
-<!--             rotation="-90 0 0" width="2" height="2" color="pink"></a-plane>-->
-<!--</a-scene>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Super Hands Physics Demo</title>
-
-    <!-- A-Frame Core -->
+    <title>ICT-practicum</title>
+    <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-
-    <!-- Super Hands & Physics -->
+    <!--    Workaround voor super hands-->
     <script>
         delete AFRAME.components["grabbable"];
     </script>
-    <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"></script>
-    <script src="https://unpkg.com/aframe-event-set-component@^4.1.1/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <!-- Environment -->
+    <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
 
-    <!-- Phase Shift Component -->
-    <script>
-        AFRAME.registerComponent('phase-shift', {
-            init: function () {
-                var el = this.el;
-                el.addEventListener('gripdown', function () {
-                    el.setAttribute('collision-filter', {collisionForces: true});
-                });
-                el.addEventListener('gripup', function () {
-                    el.setAttribute('collision-filter', {collisionForces: false});
-                });
-            }
-        });
-    </script>
+    <!-- A-Frame Event System -->
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
+
+    <!-- Physics -->
+    <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
+    <!-- A-Frame Physics Extra Add-On -->
+    <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
+
+    <!--    extras -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+    <!-- Superhands (voor grijpen met pinch) -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.misc.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.5/dist/super-hands.min.js"></script>
+
+    <script src="./main/js/script.js"></script>
+
 </head>
 
 <body>
-<a-scene physics="gravity: -9.8">
+<a-scene physics="gravity: -9.8; debug: false" vr-mode-ui="enabled: true" background="color: #ECECEC">
 
-    <!-- Mixins -->
-    <a-assets>
-        <a-mixin id="all-interactions"
-                 hoverable grabbable stretchable draggable
-                 event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
-                 event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
-                 dynamic-body></a-mixin>
+    <!-- Omgeving -->
+    <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
 
-        <a-mixin id="physics-hands"
-                 physics-collider phase-shift
-                 collision-filter="collisionForces: false"
-                 static-body="shape: sphere; sphereRadius: 0.02"
-                 super-hands="colliderEvent: collisions;
-                          colliderEventProperty: els;
-                          colliderEndEvent: collisions;
-                          colliderEndEventProperty: clearedEls;"></a-mixin>
-    </a-assets>
+    <!-- Camera rig (geen vaste hoogte meer) -->
+    <a-entity id="rig" movement-controls>
+        <a-entity camera look-controls wasd-controls-enabled="false">
+            <a-entity id="statusText"
+                      position="0 -0.3 -1"
+                      text="value: maat ik geef t op; color: yellow; align: center; width: 2;">
+            </a-entity>
+        </a-entity>
+    </a-entity>
 
-    <!-- Camera -->
-    <a-entity camera position="0 1.6 0" look-controls></a-entity>
 
-    <!-- Hands -->
-    <a-entity id="lhand" mixin="physics-hands" hand-controls="hand: left"></a-entity>
-    <a-entity id="rhand" mixin="physics-hands" hand-controls="hand: right"></a-entity>
+    <!-- Hand tracking met pinch-grab -->
+    <a-entity id="leftHand" hand-tracking-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
+              super-hands="grabStartButtons: pinchstarted; grabEndButtons: pinchended"
+              pinch-logger="hand: left"
+              hand-grab-debug
+              static-body>
+        <a-entity position="0 0 -0.05"
+                  raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: red"
+                  line="color: red"></a-entity>
+    </a-entity>
 
-    <!-- Floor -->
-    <a-box static-body width="100" height="0.01" depth="100" visible="false" position="0 0 -5"></a-box>
 
-    <!-- Interactief object -->
-    <a-entity class="cube" mixin="all-interactions"
-              geometry="primitive: box"
-              material="color: red"
-              position="0 0.5 -1"></a-entity>
+    <a-entity id="rightHand"
+              hand-tracking-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
+              super-hands="grabStartButtons: pinchstarted; grabEndButtons: pinchended"
+              pinch-logger="hand: right"
+              hand-grab-debug
+              static-body>
+        <a-entity position="0 0 -0.05"
+                  raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: green"
+                  line="color: green"></a-entity>
+    </a-entity>
 
+
+    <!-- Grondvlak -->
+    <a-plane position="0 1 0"
+             rotation="-90 0 0"
+             width="20"
+             height="20"
+             static-body
+             color="#7BC8A4">
+    </a-plane>
+
+    <!-- Interactieve objecten -->
+    <a-box hoverable grabbable draggable droppable hover-color="color: pink; original: green"
+           grab-debug
+           dynamic-body="mass: 10" position="0 3 -3"
+           rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>
+
+    <a-box hoverable
+           grab-debug
+           grabbable draggable droppable hover-color="color: pink; original: green"
+           dynamic-body="mass: 10" position="-1 10.25 -3"
+           rotation="30 3 20" width="0.5" height="0.5" depth="0.5" color="green"></a-box>
+
+    <a-box hoverable
+           grab-debug
+           grabbable draggable droppable hover-color="color: pink; original: green"
+           dynamic-body="mass: 10" position="1 10.25 -3"
+           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
+
+    <a-box hoverable grab-debug grabbable draggable droppable
+           hover-color="color: pink; original: green"
+           dynamic-body="mass: 10" position="0 0 -2"
+           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
+
+    <a-cylinder grab-debug hover-color="color: pink; original: green"
+                hoverable grabbable draggable droppable dynamic-body="mass: 10" position="2 3 -4"
+                radius="0.25" height="0.5" color="yellow"></a-cylinder>
+
+    <a-box grab-debug hoverable grabbable draggable droppable hover-color="color: pink; original: green"
+           dynamic-body="mass: 10" position="1 2 -3.2"
+           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
+
+    <a-box grab-debug hoverable grabbable draggable droppable hover-color="color: pink; original: green"
+           dynamic-body="mass: 10" position="-1 2 -3"
+           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
+
+    <a-plane grab-debug hoverable grabbable draggable droppable hover-color="color: pink; original: green"
+             dynamic-body="mass: 10" position="-4 4 -4"
+             rotation="-90 0 0" width="2" height="2" color="pink"></a-plane>
 </a-scene>
 </body>
 </html>
+
 
