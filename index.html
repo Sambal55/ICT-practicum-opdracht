@@ -124,165 +124,156 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="utf-8" />
-    <title>Pinch grab - werkende debug versie</title>
+    <meta charset="UTF-8" />
+    <title>Hand Tracking Debug</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-physics-system@v6.1.0/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.5/dist/super-hands.min.js"></script>
 
-    <!-- A-Frame -->
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script>
+        // Debug-component: toont pinch en grab status
+        AFRAME.registerComponent("hand-debug", {
+            schema: {
+                hand: { type: "string", default: "left" },
+            },
+            init: function () {
+                const handEl = this.el;
+                const handSide = this.data.hand;
 
-    <!-- Workaround: verwijder ingebouwde grabbable (zodat super-hands zijn eigen grabbable gebruikt) -->
-    <script> delete AFRAME.components['grabbable']; </script>
+                // Debug text entities
+                this.pinchText = document.createElement("a-text");
+                this.pinchText.setAttribute("value", "Pinch: false");
+                this.pinchText.setAttribute("color", "red");
+                this.pinchText.setAttribute("position", "0 0.1 0");
+                this.pinchText.setAttribute("scale", "0.3 0.3 0.3");
+                handEl.appendChild(this.pinchText);
 
-    <!-- Environment + Physics -->
-    <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
-    <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
+                this.grabText = document.createElement("a-text");
+                this.grabText.setAttribute("value", "Grab: false");
+                this.grabText.setAttribute("color", "orange");
+                this.grabText.setAttribute("position", "0 -0.1 0");
+                this.grabText.setAttribute("scale", "0.3 0.3 0.3");
+                handEl.appendChild(this.grabText);
 
-    <!-- aframe-extras (sphere-collider) -->
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+                // Event listeners
+                handEl.addEventListener("pinchstarted", () => {
+                    this.pinchText.setAttribute("color", "lime");
+                    this.pinchText.setAttribute("value", "Pinch: true");
+                });
 
-    <!-- Super-hands (grabbable / hoverable reaction components) -->
-    <script src="https://unpkg.com/super-hands@^3.0.5/dist/super-hands.min.js"></script>
+                handEl.addEventListener("pinchended", () => {
+                    this.pinchText.setAttribute("color", "red");
+                    this.pinchText.setAttribute("value", "Pinch: false");
+                });
 
-    <style> body { margin:0; } </style>
+                handEl.addEventListener("grab-start", () => {
+                    this.grabText.setAttribute("color", "lime");
+                    this.grabText.setAttribute("value", "Grab: true");
+                });
+
+                handEl.addEventListener("grab-end", () => {
+                    this.grabText.setAttribute("color", "orange");
+                    this.grabText.setAttribute("value", "Grab: false");
+                });
+            },
+        });
+
+        // Hover kleur
+        AFRAME.registerComponent("hover-color", {
+            schema: {
+                color: { type: "color", default: "#FFFF00" },
+                original: { type: "color", default: "#4CC3D9" },
+            },
+            init: function () {
+                const el = this.el;
+                const data = this.data;
+
+                el.addEventListener("hover-start", () => {
+                    el.setAttribute("color", data.color);
+                });
+
+                el.addEventListener("hover-end", () => {
+                    el.setAttribute("color", data.original);
+                });
+
+                el.addEventListener("grab-start", () => {
+                    el.setAttribute("color", "#FF0000");
+                });
+
+                el.addEventListener("grab-end", () => {
+                    el.setAttribute("color", data.original);
+                });
+            },
+        });
+    </script>
 </head>
+
 <body>
-<a-scene physics="gravity: -9.8; debug: false" vr-mode-ui="enabled: true" background="color: #ECECEC">
+<a-scene
+        physics="debug: false; gravity: -9.8"
+        background="color: #ECECEC"
+        vr-mode-ui="enabled: true"
+>
+    <!-- Licht en grond -->
+    <a-entity light="type: directional; intensity: 0.7" position="1 2 1"></a-entity>
+    <a-plane
+            position="0 0 -1"
+            rotation="-90 0 0"
+            width="10"
+            height="10"
+            color="#7BC8A4"
+            static-body
+    ></a-plane>
 
-    <!-- Environment -->
-    <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
+    <!-- Handen -->
+    <a-entity
+            id="leftHand"
+            hand-tracking-controls="hand: left; modelStyle: lowPoly; color: #ffcccc"
+            super-hands="colliderEvent: collisions; grabStartButtons: pinchstarted; grabEndButtons: pinchended"
+            static-body
+            hand-debug="hand: left"
+    ></a-entity>
 
-    <!-- Debug text voor in-world feedback -->
-    <a-entity id="debugText" position="0 1.7 -1.5"
-              text="value: NA DEES IS HET ECHT KLAAR; color: yellow; align: center; width: 2;">
-    </a-entity>
+    <a-entity
+            id="rightHand"
+            hand-tracking-controls="hand: right; modelStyle: lowPoly; color: #ccffcc"
+            super-hands="colliderEvent: collisions; grabStartButtons: pinchstarted; grabEndButtons: pinchended"
+            static-body
+            hand-debug="hand: right"
+    ></a-entity>
 
-    <!-- Camera rig -->
-    <a-entity id="rig">
-        <a-entity camera look-controls></a-entity>
-    </a-entity>
+    <!-- Objecten -->
+    <a-box
+            position="0 1.2 -0.5"
+            color="#4CC3D9"
+            depth="0.3"
+            height="0.3"
+            width="0.3"
+            class="grabbable"
+            hover-color
+            dynamic-body
+    ></a-box>
 
-    <!-- LEFT HAND: geen static-body, wel sphere-collider en super-hands.
-         radius: 0.06 zorgt dat objecten binnen ~6cm gedetecteerd worden -->
-    <a-entity id="leftHand"
-              hand-tracking-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
-              super-hands="colliderEvent: hit; colliderEventProperty: el; colliderEndEvent: hitEnd; colliderEndEventProperty: el; grabStartButtons: pinchstarted; grabEndButtons: pinchended"
-              sphere-collider="objects: .pickup; radius: 0.10">
-    </a-entity>
+    <a-cylinder
+            position="0.5 1.2 -0.5"
+            radius="0.15"
+            height="0.3"
+            color="#FFC65D"
+            class="grabbable"
+            hover-color
+            dynamic-body
+    ></a-cylinder>
 
-    <!-- RIGHT HAND -->
-    <a-entity id="rightHand"
-              hand-tracking-controls="hand: right; handModelStyle: lowPoly; color: #ccffcc"
-              super-hands="colliderEvent: hit; colliderEventProperty: el; colliderEndEvent: hitEnd; colliderEndEventProperty: el; grabStartButtons: pinchstarted; grabEndButtons: pinchended"
-              sphere-collider="objects: .pickup; radius: 0.10">
-    </a-entity>
+    <a-sphere
+            position="-0.5 1.2 -0.5"
+            radius="0.18"
+            color="#EF2D5E"
+            class="grabbable"
+            hover-color
+            dynamic-body
+    ></a-sphere>
 
-    <!-- Ground -->
-    <a-plane rotation="-90 0 0" width="20" height="20" static-body color="#7BC8A4" position="0 0 0"></a-plane>
-
-    <!-- Pickup objects: class .pickup (sphere-collider zoekt deze), hoverable & grabbable from super-hands, dynamic-body for physics -->
-    <a-box class="pickup"
-           position="0 1.2 -0.3"
-           width="0.4" height="0.4" depth="0.4"
-           color="red"
-           hoverable
-           grabbable
-           dynamic-body="mass: 2">
-    </a-box>
-
-    <a-box class="pickup"
-           position="0.8 1.2 -0.3"
-           width="0.4" height="0.4" depth="0.4"
-           color="green"
-           hoverable
-           grabbable
-           dynamic-body="mass: 2">
-    </a-box>
-
-    <a-cylinder class="pickup"
-                position="-0.8 1.2 -0.3"
-                radius="0.25" height="0.4"
-                color="yellow"
-                hoverable
-                grabbable
-                dynamic-body="mass: 2">
-    </a-cylinder>
-
+    <a-entity position="0 1.8 0" text="value: Hand Tracking Debug Mode; color: black;"></a-entity>
 </a-scene>
-
-<script>
-    /* Global event listeners for hover / grab events.
-       These listen on the scene (bubbling) and update debugText and console.
-       This is reliable because super-hands emits hover-start/hover-end/grab-start/grab-end on the target entities.
-    */
-
-    (function () {
-        const debugEl = document.querySelector('#debugText');
-
-        function setDebug(msg) {
-            console.log('[VR DEBUG]', msg);
-            if (debugEl) debugEl.setAttribute('text', 'value', msg);
-        }
-
-        // hover-start / hover-end on pickup objects
-        document.addEventListener('hover-start', (ev) => {
-            // ev.target is the entity that got hovered
-            const target = ev.target;
-            target.setAttribute('color', 'orange'); // visual hover
-            setDebug(`hover-start: ${target.tagName} ${target.id || ''}`);
-        });
-
-        document.addEventListener('hover-end', (ev) => {
-            const target = ev.target;
-            // restore: try to read original color attribute (if you stored it) or set a default
-            const orig = target.getAttribute('data-original-color') || target.getAttribute('color') || '#888';
-            target.setAttribute('color', orig);
-            setDebug(`hover-end: ${target.tagName} ${target.id || ''}`);
-        });
-
-        // when the scene first loads, remember original colors so we can restore them
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.pickup').forEach(el => {
-                const col = el.getAttribute('color') || '#FFF';
-                el.setAttribute('data-original-color', col);
-            });
-        });
-
-        // grab-start / grab-end: these events are emitted on the TARGET (the picked up object).
-        document.addEventListener('grab-start', (ev) => {
-            const target = ev.target; // the grabbed entity
-            // mark grabbed visually
-            target.setAttribute('color', 'magenta');
-            // show debug text including which hand (detail.hand is the hand entity)
-            const hand = (ev.detail && ev.detail.hand) ? (ev.detail.hand.id || ev.detail.hand.tagName) : 'unknown-hand';
-            setDebug(`grab-start: ${target.tagName} by ${hand}`);
-        });
-
-        document.addEventListener('grab-end', (ev) => {
-            const target = ev.target;
-            // restore original color after release
-            const orig = target.getAttribute('data-original-color') || target.getAttribute('color') || '#FFF';
-            target.setAttribute('color', orig);
-            const hand = (ev.detail && ev.detail.hand) ? (ev.detail.hand.id || ev.detail.hand.tagName) : 'unknown-hand';
-            setDebug(`grab-end: ${target.tagName} by ${hand}`);
-        });
-
-        // Extra: log collider hits from sphere-collider so you can see range
-        document.addEventListener('hit', (ev) => {
-            // emitted by sphere-collider: ev.detail.el is the collided entity (if configured that way)
-            const collided = ev.detail && ev.detail.el ? ev.detail.el : ev.target;
-            const hand = ev.target; // the hand entity that emitted the event
-            setDebug(`hand ${hand.id} HIT ${collided.tagName}`);
-            console.log('sphere-collider hit event', ev);
-        });
-
-        document.addEventListener('hitEnd', (ev) => {
-            const collided = ev.detail && ev.detail.el ? ev.detail.el : ev.target;
-            const hand = ev.target;
-            setDebug(`hand ${hand.id} HIT END ${collided.tagName}`);
-            console.log('sphere-collider hitEnd', ev);
-        });
-
-    })();
-</script>
 </body>
 </html>
