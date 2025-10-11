@@ -5,6 +5,8 @@ AFRAME.registerComponent("pinch-detector", {
         this.debugText = document.getElementById("debugText");
     },
     tick: function () {
+        /** @type {any} */
+
         const xrSession = this.el.sceneEl.renderer.xr.getSession();
         if (!xrSession) return;
 
