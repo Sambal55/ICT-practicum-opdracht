@@ -123,74 +123,56 @@
 <!--</html>-->
 
 
-<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>A-Frame VR Interactie Demo</title>
-    <meta name="description" content="Interactieve VR demo met boxen">
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.1/dist/aframe-physics-system.min.js"></script>
 </head>
 <body>
-<a-scene physics="gravity: -9.8" embedded>
+<a-scene physics="gravity: -9.8">
+    <!-- Camera met joystick-besturing -->
+    <a-entity id="cameraRig" position="0 1.6 5">
+        <a-camera wasd-controls-enabled="false"></a-camera>
+    </a-entity>
 
-    <!-- Licht en vloer -->
-    <a-entity light="type: directional; intensity: 0.8" position="1 3 2"></a-entity>
-    <a-plane rotation="-90 0 0" width="10" height="10" color="#7BC8A4" static-body></a-plane>
+    <!-- Grond -->
+    <a-box position="0 0 -5" width="20" height="0.5" depth="20" color="#7BC8A4" static-body></a-box>
 
-    <!-- VR controller -->
-    <a-entity id="controller" laser-controls="hand: right" raycaster="objects: .interactable" grabber></a-entity>
+    <!-- Beweegbare box -->
+    <a-box id="playerBox" position="0 1 -5" color="#EF2D5E" dynamic-body></a-box>
 
-    <!-- Interactieve boxen -->
-    <a-box class="interactable" position="-1 1 -3" color="#4CC3D9" depth="0.5" height="0.5" width="0.5" dynamic-body></a-box>
-    <a-box class="interactable" position="0 1 -3" color="#FFC65D" depth="0.5" height="0.5" width="0.5" dynamic-body></a-box>
-    <a-box class="interactable" position="1 1 -3" color="#7BC8A4" depth="0.5" height="0.5" width="0.5" dynamic-body></a-box>
-
-    <!-- Camera -->
-    <a-entity camera position="0 1.6 0"></a-entity>
-
-    <!-- Scripts -->
-    <script>
-        AFRAME.registerComponent('grabber', {
-            init: function () {
-                const controller = this.el;
-                let grabbed = null;
-
-                // Hover kleur
-                const boxes = document.querySelectorAll('.interactable');
-                boxes.forEach(box => {
-                    box.addEventListener('mouseenter', () => {
-                        box.setAttribute('color', '#FF0000');
-                    });
-                    box.addEventListener('mouseleave', () => {
-                        box.setAttribute('color', box.getAttribute('original-color') || '#4CC3D9');
-                    });
-                    box.setAttribute('original-color', box.getAttribute('color'));
-                });
-
-                // Oppakken
-                controller.addEventListener('triggerdown', () => {
-                    const intersection = controller.components.raycaster.getIntersection(document.querySelector('.interactable'));
-                    if (intersection) {
-                        grabbed = intersection.object.el;
-                        grabbed.removeAttribute('dynamic-body');
-                        controller.object3D.attach(grabbed.object3D);
-                    }
-                });
-
-                // Loslaten
-                controller.addEventListener('triggerup', () => {
-                    if (grabbed) {
-                        controller.object3D.remove(grabbed.object3D);
-                        grabbed.setAttribute('dynamic-body', '');
-                        grabbed = null;
-                    }
-                });
-            }
-        });
-    </script>
+    <!-- Licht -->
+    <a-light type="directional" position="0 10 0" intensity="1"></a-light>
 </a-scene>
+
+<script>
+    // Joystick of toetsenbord input
+    document.addEventListener("keydown", (e) => {
+        const box = document.querySelector("#playerBox");
+        const force = 5;
+        let impulse = { x: 0, y: 0, z: 0 };
+
+        switch (e.key) {
+            case "ArrowUp":
+                impulse.z = -force;
+                break;
+            case "ArrowDown":
+                impulse.z = force;
+                break;
+            case "ArrowLeft":
+                impulse.x = -force;
+                break;
+            case "ArrowRight":
+                impulse.x = force;
+                break;
+        }
+
+        box.body.applyImpulse(
+            new CANNON.Vec3(impulse.x, impulse.y, impulse.z),
+            new CANNON.Vec3().copy(box.body.position)
+        );
+    });
+</script>
 </body>
 </html>
 
