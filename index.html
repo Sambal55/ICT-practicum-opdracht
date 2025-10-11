@@ -109,7 +109,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Hand Tracking Demo - KIWI</title>
-    <script src="./main/js/script.js"></script>
     <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
@@ -122,9 +121,8 @@
     <!-- Superhands (voor grijpen met pinch) -->
     <script src="https://cdn.jsdelivr.net/npm/super-hands@4.0.4/dist/super-hands.min.js"></script>
 
-    <style>
-        body { margin: 0; overflow: hidden; }
-    </style>
+    <script src="./main/js/script.js"></script>
+
 </head>
 
 <body>
@@ -139,7 +137,7 @@
             <!-- Tekst feedback -->
             <a-entity id="statusText"
                       position="0 -0.3 -1"
-                      text="value: ready whoop; color: yellow; align: center; width: 2;">
+                      text="value: ready; color: yellow; align: center; width: 2;">
             </a-entity>
         </a-entity>
     </a-entity>
