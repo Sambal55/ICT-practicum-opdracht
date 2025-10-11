@@ -2,42 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!--    aframe-->
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <!--    Enviroment-->
-    <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
-    <!--    physics-->
-    <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
-    <!--    extras -->
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
-    <script src="js/script.js"></script>
     <title>ICT-opdracht</title>
+
+    <!-- A-Frame -->
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <!-- Environment -->
+    <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
+
+    <!-- Physics -->
+    <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
+
+    <!-- Extras -->
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+
+    <!-- Hand tracking -->
+    <script src="https://cdn.jsdelivr.net/npm/@c-frame/hand-tracking-controls@latest/dist/hand-tracking-controls.min.js"></script>
+
+    <!-- Custom script -->
+    <script src="js/script.js"></script>
 </head>
 <body>
-<a-scene physics="gravity: -9.8; debug: true">
+<a-scene physics="gravity: -9.8; debug: true" obb-collider="showColliders: true" vr-mode-ui="enabled: true">
+
     <!-- Omgeving -->
     <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
 
+    <!-- Hand tracking met zichtbare handen en ray -->
+    <a-entity id="leftHand"
+              hand-tracking-grab-controls="hand: left; hoverEnabled: true"
+              hand-tracking-controls="hand: left; modelStyle: mesh"
+              raycaster="objects: [grabbable]; showLine: true; lineColor: green; far: 5">
+    </a-entity>
 
-    <!--    ondersteuning voor quest - joystick controls-->
+    <a-entity id="rightHand"
+              hand-tracking-grab-controls="hand: right; hoverEnabled: true"
+              hand-tracking-controls="hand: right; modelStyle: mesh"
+              raycaster="objects: [grabbable]; showLine: true; lineColor: red; far: 5">
+    </a-entity>
+
+    <!-- Ondersteuning voor Quest - joystick controls -->
     <a-entity id="rig" position="0 1.6 0">
-        <a-entity camera look-controls wasd-controls position="0 1.6 0">
+        <a-entity camera look-controls position="0 1.6 0">
             <a-entity id="ctlR"
-                      pickup-box
-                      position="0 1.2 -0.5"
-                      raycaster="objects: .cube; far: 5; showLine: true; lineColor: red"
+                      raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: red"
                       meta-touch-controls="hand: right">
             </a-entity>
             <a-entity id="ctlL"
-                      position="-2 1.2 -0.5"
-                      pickup-box
-                      raycaster="objects: .cube; far: 5; showLine: true; lineColor: green"
+                      raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: green"
                       meta-touch-controls="hand: left">
             </a-entity>
         </a-entity>
     </a-entity>
 
-
+    <!-- Grondvlak (niet grijpbaar) -->
     <a-plane position="0 1 0"
              rotation="-90 0 0"
              width="20"
@@ -46,30 +64,31 @@
              color="#7BC8A4">
     </a-plane>
 
-    <a-box class="movingObject" dynamic-body="mass: 10;" position="0 3 -3"
+    <!-- Interactieve objecten -->
+    <a-box grabbable dynamic-body="mass: 10" position="0 3 -3"
            rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>
-    <a-box class="movingObject" dynamic-body="mass: 100" position="-1 10.25 -3"
-           width="0.5" rotation="30 3 20"
-           height="0.5" depth="0.5" color="green"></a-box>
-    <a-box class="movingObject" dynamic-body position="1 10.25 -3" width="0.5" height="0.5"
-           depth="0.5"
-           color="blue"></a-box>
-    <a-box class="movingObject" dynamic-body position="0 0 -2" width="0.5" height="0.5" depth="0.5"
-           color="blue"></a-box>
 
-    <a-cylinder class="cylinder" dynamic-body="mass:100" position="2 3 -4"
-                color="yellow"></a-cylinder>
-    <a-box class="movingObject" dynamic-body="mass: 100" position="1 2 -3.2" rotation="0 0 0"
-           color="#4CC3D9"></a-box>
-    <a-box class="movingObject" dynamic-body="mass: 100" position="-1 2 -3" rotation="0 0 0"
-           color="#4CC3D9"></a-box>
-    <a-plane class="movingObject"
-             position="-4 4 -4"
-             rotation="-90 0 0"
-             width="2"
-             height="2"
-             dynamic-body="mass: 100"
-             color="pink"></a-plane>
+    <a-box grabbable dynamic-body="mass: 100" position="-1 10.25 -3"
+           rotation="30 3 20" width="0.5" height="0.5" depth="0.5" color="green"></a-box>
+
+    <a-box grabbable dynamic-body position="1 10.25 -3"
+           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
+
+    <a-box grabbable dynamic-body position="0 0 -2"
+           width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
+
+    <a-cylinder grabbable dynamic-body="mass:100" position="2 3 -4"
+                radius="0.25" height="0.5" color="yellow"></a-cylinder>
+
+    <a-box grabbable dynamic-body="mass: 100" position="1 2 -3.2"
+           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
+
+    <a-box grabbable dynamic-body="mass: 100" position="-1 2 -3"
+           rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
+
+    <a-plane grabbable dynamic-body="mass: 100" position="-4 4 -4"
+             rotation="-90 0 0" width="2" height="2" color="pink"></a-plane>
+
 </a-scene>
 </body>
 </html>

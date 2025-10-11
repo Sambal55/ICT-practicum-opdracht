@@ -44,6 +44,7 @@ AFRAME.registerComponent('pickup-box', {
 
         // Oppakken met trigger (RB of RT)
         if (gp.buttons[7]?.pressed && !this.heldObject && hits.length > 0) {
+            console.log('trigger press')
             const target = hits[0].object.el;
             if (target.classList.contains('movingObject')) {
                 this.heldObject = target;
