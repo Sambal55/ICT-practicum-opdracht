@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hand Tracking Demo - KIWI</title>
+    <title>ICT-practicum</title>
     <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
@@ -30,7 +30,7 @@
         <a-entity camera look-controls wasd-controls-enabled="false">
             <a-entity id="statusText"
                       position="0 -0.3 -1"
-                      text="value: ray works; color: yellow; align: center; width: 2;">
+                      text="value: hopefully this works; color: yellow; align: center; width: 2;">
             </a-entity>
         </a-entity>
     </a-entity>
@@ -68,28 +68,37 @@
     </a-plane>
 
     <!-- Interactieve objecten -->
-    <a-box grabbable hover-color="color: pink" dynamic-body="mass: 10" position="0 3 -3"
+    <a-box grabbable hover-color="color: pink; original: green"
+           dynamic-body="mass: 10" position="0 3 -3"
            rotation="45 0 45" width="0.5" height="0.5" depth="0.5" color="red"></a-box>
 
-    <a-box grabbable dynamic-hover-color="color: pink" body="mass: 100" position="-1 10.25 -3"
+    <a-box grabbable hover-color="color: pink; original: green"
+           dynamic-body="mass: 100" position="-1 10.25 -3"
            rotation="30 3 20" width="0.5" height="0.5" depth="0.5" color="green"></a-box>
 
-    <a-box grabbable hover-color="color: pink" dynamic-body position="1 10.25 -3"
+    <a-box grabbable hover-color="color: pink; original: green"
+           dynamic-body position="1 10.25 -3"
            width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
 
-    <a-box grabbable hover-color="color: pink"  dynamic-body position="0 0 -2"
+    <a-box grabbable
+           hover-color="color: pink; original: green"
+           dynamic-body position="0 0 -2"
            width="0.5" height="0.5" depth="0.5" color="blue"></a-box>
 
-    <a-cylinder hover-color="color: pink" grabbable dynamic-body="mass:100" position="2 3 -4"
+    <a-cylinder hover-color="color: pink; original: green"
+                grabbable dynamic-body="mass:100" position="2 3 -4"
                 radius="0.25" height="0.5" color="yellow"></a-cylinder>
 
-    <a-box grabbable hover-color="color: pink" dynamic-body="mass: 100" position="1 2 -3.2"
+    <a-box grabbable hover-color="color: pink; original: green"
+           dynamic-body="mass: 100" position="1 2 -3.2"
            rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
 
-    <a-box grabbable hover-color="color: pink" dynamic-body="mass: 100" position="-1 2 -3"
+    <a-box grabbable hover-color="color: pink; original: green"
+           dynamic-body="mass: 100" position="-1 2 -3"
            rotation="0 0 0" width="0.5" height="0.5" depth="0.5" color="#4CC3D9"></a-box>
 
-    <a-plane grabbable hover-color="color: pink" dynamic-body="mass: 100" position="-4 4 -4"
+    <a-plane grabbable hover-color="color: pink; original: green"
+             dynamic-body="mass: 100" position="-4 4 -4"
              rotation="-90 0 0" width="2" height="2" color="pink"></a-plane>
 
 </a-scene>
