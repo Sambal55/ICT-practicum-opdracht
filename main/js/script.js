@@ -13,3 +13,29 @@ AFRAME.registerComponent('pinch-logger', {
         });
     }
 });
+
+
+AFRAME.registerComponent('pinch-debug', {
+    init: function () {
+        const scene = document.querySelector('a-scene');
+        let debugText = document.getElementById('statusText');
+
+        if (!debugText) {
+            debugText = document.createElement('a-text');
+            debugText.setAttribute('id', 'statusText');
+            debugText.setAttribute('value', 'Ready');
+            debugText.setAttribute('color', 'yellow');
+            debugText.setAttribute('align', 'center');
+            debugText.setAttribute('position', '0 -0.3 -1');
+            this.el.sceneEl.camera.el.appendChild(debugText);
+        }
+
+        this.el.addEventListener('pinchstarted', () => {
+            debugText.setAttribute('value', '🤏 Pinch started (' + this.el.id + ')');
+        });
+
+        this.el.addEventListener('pinchended', () => {
+            debugText.setAttribute('value', '👋 Pinch ended (' + this.el.id + ')');
+        });
+    }
+});
