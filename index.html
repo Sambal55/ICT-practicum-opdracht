@@ -30,7 +30,7 @@
         <a-entity camera look-controls wasd-controls-enabled="false">
             <a-entity id="statusText"
                       position="0 -0.3 -1"
-                      text="value: raycaster?; color: yellow; align: center; width: 2;">
+                      text="value: raycaster; color: yellow; align: center; width: 2;">
             </a-entity>
         </a-entity>
     </a-entity>
@@ -38,19 +38,21 @@
 
 
     <!-- Hand tracking met pinch-grab -->
-    <a-entity id="leftHand"
-              hand-tracking-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
+    <a-entity id="leftHand" hand-tracking-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
               super-hands="grabStartButtons: pinchstarted; grabEndButtons: pinchended"
               pinch-logger="hand: left">
-        <a-entity raycaster="objects: .grabbable; far: 5; showLine: true; lineColor: red"
+        <a-entity position="0 0 -0.05"
+                  raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: red"
                   line="color: red"></a-entity>
     </a-entity>
+
 
     <a-entity id="rightHand"
               hand-tracking-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc"
               super-hands="grabStartButtons: pinchstarted; grabEndButtons: pinchended"
               pinch-logger="hand: right">
-        <a-entity raycaster="objects: .grabbable; far: 5; showLine: true; lineColor: green"
+        <a-entity position="0 0 -0.05"
+                  raycaster="objects: [grabbable]; far: 5; showLine: true; lineColor: green"
                   line="color: green"></a-entity>
     </a-entity>
 
