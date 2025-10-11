@@ -36,3 +36,17 @@ AFRAME.registerComponent('pinch-debug', {
         });
     }
 });
+
+AFRAME.registerComponent('hover-color', {
+    schema: { color: { type: 'color', default: 'yellow' } },
+    init: function () {
+        const el = this.el;
+        el.addEventListener('mouseenter', () => {
+            el.setAttribute('color', this.data.color);
+        });
+        el.addEventListener('mouseleave', () => {
+            el.setAttribute('color', 'blue'); // originele kleur of haal dynamisch uit attribute
+        });
+    }
+});
+
