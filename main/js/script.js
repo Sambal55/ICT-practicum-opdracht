@@ -73,31 +73,3 @@ AFRAME.registerComponent("debug-toggle", {
     }
 });
 
-// aanwijs bolletje op raycaster
-AFRAME.registerComponent("hover-indicator", {
-    init: function () {
-        // Maak het bolletje
-        this.indicator = document.createElement("a-sphere");
-        this.indicator.setAttribute("radius", "0.03");
-        this.indicator.setAttribute("color", "red");
-        this.indicator.setAttribute("visible", "false");
-        // geen physics voor aanwijsbolletje
-        this.indicator.setAttribute("collision-filter", "collisionForces: false");
-        this.el.sceneEl.appendChild(this.indicator);
-
-        this.el.addEventListener("raycaster-intersection", (e) => {
-            const hits = e.detail.els;
-            if (hits && hits.length > 0) {
-                const hit = hits[0];
-                const hitPos = hit.object3D.getWorldPosition(new THREE.Vector3());
-                this.indicator.setAttribute("position", hitPos);
-                this.indicator.setAttribute("visible", "true");
-            }
-        });
-
-        // Verberg als er geen intersectie meer is
-        this.el.addEventListener("raycaster-intersection-cleared", () => {
-            this.indicator.setAttribute("visible", "false");
-        });
-    }
-});
