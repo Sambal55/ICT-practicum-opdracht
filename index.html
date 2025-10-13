@@ -59,20 +59,27 @@
     </a-entity>
 
 
+    <!--    grondvlak-->
+    <a-plane position="0 1 0"
+             rotation="-90 0 0"
+             width="20"
+             height="20"
+             static-body
+             color="#7BC8A4">
+    </a-plane>
     <!--    static objecten-->
     <a-box static-body position="1 2 -3" rotation="0 0 0" color="#4CC3D9"></a-box>
     <a-box static-body animation="property: position; to: 1 8 -10; dur: 2000; easing: linear; loop: true"
            position="0 2 -5"
            rotation="45 0 45" src="#platform"></a-box>
     <a-box static-body position="-1 2 -3" rotation="0 0 0" color="#4CC3D9"></a-box>
-    <a-plane static-body position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
     <a-assets>
         <img id="platform" src="https://i.imgur.com/mYmmbrp.jpg">
     </a-assets>
 
     <!--    dynamische objecten-->
     <a-box class="botsen grabbable"
-           dynamic-body="shape: sphere"
+           dynamic-body="shape: cube; mass: 20;"
            position="0 6.25 -3"
            rotation="45 0 45"
            width="0.5"
@@ -91,7 +98,7 @@
            color="green">
     </a-box>
     <a-box class="botsen grabbable"
-           dynamic-body
+           dynamic-body="mass: 20;"
            position="1 10.25 -3"
            width="0.5"
            height="0.5"
