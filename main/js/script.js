@@ -2,17 +2,17 @@ AFRAME.registerComponent("input-listen", {
     init: function () {
         let lastHit = null;
 
-        // Raycaster raakt iets
-        this.el.addEventListener("raycaster-intersected", (e) => {
-            const hits = e.detail.intersectedEls;
+        // Wordt geactiveerd zodra raycaster iets raakt
+        this.el.addEventListener("raycaster-intersection", (e) => {
+            const hits = e.detail.els;
             if (hits && hits.length > 0) {
                 lastHit = hits[0];
                 console.log("Raycaster raakt:", lastHit.id || lastHit.className);
             }
         });
 
-        // Raycaster raakt niets meer
-        this.el.addEventListener("raycaster-intersected-cleared", () => {
+        // Wordt geactiveerd zodra raycaster niets meer raakt
+        this.el.addEventListener("raycaster-intersection-cleared", () => {
             lastHit = null;
         });
 
