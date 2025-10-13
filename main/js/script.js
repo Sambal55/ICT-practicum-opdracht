@@ -1,33 +1,4 @@
-AFRAME.registerComponent("input-listen", {
-    init: function () {
-        let lastHit = null;
-
-        // Wordt geactiveerd zodra raycaster iets raakt
-        this.el.addEventListener("raycaster-intersection", (e) => {
-            const hits = e.detail.els;
-            if (hits && hits.length > 0) {
-                lastHit = hits[0];
-                console.log("Raycaster raakt:", lastHit.id || lastHit.className);
-            }
-        });
-
-        // Wordt geactiveerd zodra raycaster niets meer raakt
-        this.el.addEventListener("raycaster-intersection-cleared", () => {
-            lastHit = null;
-        });
-
-        // Trigger indrukken
-        this.el.addEventListener("triggerdown", () => {
-            if (lastHit) {
-                console.log("Grijpt:", lastHit.id || lastHit.className);
-                lastHit.setAttribute("color", "yellow");
-            } else {
-                console.log("Geen object geraakt bij triggerdown");
-            }
-        });
-    }
-});
-const debugEl = document.querySelector("#debugDisplay");
+import {changeDebugMode, log} from './logger.js';
 
 AFRAME.registerComponent('grabber', {
     init: function () {
@@ -35,22 +6,27 @@ AFRAME.registerComponent('grabber', {
     },
     events: {
 
-        gripdown: function(evt) {
-            if (evt.currentTarget.components['raycaster'].intersections.length>0) {
-                if (debugEl && debugEl.components["vr-debugger"]) {
-                    debugEl.components["vr-debugger"].log("✊ Grip ingedrukt");
-                }
+        gripdown: function (evt) {
+            if (evt.currentTarget.components['raycaster'].intersections.length > 0) {
+                log('vasthouden')
                 this.grabbed = evt.currentTarget.components['raycaster'].intersections[0].object.el;
                 evt.currentTarget.object3D.attach(this.grabbed.object3D);
             }
-        }, gripup: function(evt) {
+        }, gripup: function (evt) {
             if (this.grabbed) {
-                if (debugEl && debugEl.components["vr-debugger"]) {
-                    debugEl.components["vr-debugger"].log("🛑 Losgelaten");
-                }
+                log('losgelaten')
                 this.el.sceneEl.object3D.attach(this.grabbed.object3D);
                 this.grabbed = null;
             }
         }
+    }
+});
+
+
+AFRAME.registerComponent("debug-toggle", {
+    init: function () {
+        this.el.addEventListener("abuttondown", () => {
+            changeDebugMode();
+        });
     }
 });

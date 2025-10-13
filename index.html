@@ -12,7 +12,7 @@
 
 
     <!--    eigen js-->
-    <script src="./main/js/script.js"></script>
+    <script type="module" src="./main/js/script.js"></script>
     <meta charset="UTF-8">
     <title>COPY van ict les</title>
 </head>
@@ -21,8 +21,8 @@
     <!--camera en controls-->
     <a-entity id="rig">
         <a-entity
+                debug-toggle
                 grabber
-                input-listen
                 laser-controls="hand: left"
                 meta-touch-controls="hand: left"
                 raycaster-intersections="objects: .botsen"
@@ -33,8 +33,8 @@
                 material="color: yellow; opacity: 0.5"
                 sphere-collider="objects: .botsen;"></a-entity>
         <a-entity
+                debug-toggle
                 grabber
-                input-listen
                 raycaster-intersections="objects: .botsen"
                 id="ctlR"
                 laser-controls="hand: right"
@@ -44,6 +44,7 @@
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
                 sphere-collider="objects: .botsen;"></a-entity>
+        <a-text id="debug" position="0 1.5 -1" color="white" width="2" wrap-count="40" visible="false"></a-text>
         <!--        apart camera entity anders zitten raycasters op hoogte van ogen-->
         <a-entity camera look-controls></a-entity>
     </a-entity>
@@ -61,7 +62,7 @@
     </a-assets>
 
     <!--    dynamische objecten-->
-    <a-box class="botsen"
+    <a-box class="botsen grabbable"
            dynamic-body="shape: sphere"
            position="0 6.25 -3"
            rotation="45 0 45"
