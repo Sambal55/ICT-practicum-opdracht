@@ -18,6 +18,7 @@
     <!--camera en controls-->
     <a-entity camera look-controls>
         <a-entity
+                grab
                 input-listen
                 raycaster-intersections="objects: .botsen"
                 id="ctlL"
@@ -28,10 +29,15 @@
                 material="color: yellow; opacity: 0.5"
                 sphere-collider="objects: .botsen;"></a-entity>
         <a-entity
-                input-listen id="ctlR"
+                grab
+                input-listen
+                raycaster-intersections="objects: .botsen"
+                id="ctlR"
                 laser-controls="hand: right"
-                raycaster="objects: .botsen; lineColor: blue; far: 2"
+                raycaster="objects: .botsen; lineColor: blue; far: 4; showLine: true"
                 static-body="shape: sphere; sphereRadius: 0.02;"
+                geometry="primitive: sphere; radius: 0.02"
+                material="color: yellow; opacity: 0.5"
                 sphere-collider="objects: .botsen;"></a-entity>
     </a-entity>
 
