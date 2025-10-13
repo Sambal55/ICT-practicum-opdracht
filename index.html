@@ -13,6 +13,7 @@
 
     <!--    eigen js-->
     <script src="./main/js/script.js"></script>
+    <script src="./main/js/debug.js"></script>
     <meta charset="UTF-8">
     <title>COPY van ict les</title>
 </head>
@@ -46,6 +47,10 @@
                 sphere-collider="objects: .botsen;"></a-entity>
         <!--        apart camera entity anders zitten raycasters op hoogte van ogen-->
         <a-entity camera look-controls></a-entity>
+
+        <!--        debugger-->
+        <a-entity text="debugText"  id="debugDisplay" vr-debugger position="0 1.5 -0.5"></a-entity>
+
     </a-entity>
 
 
