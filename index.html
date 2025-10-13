@@ -7,14 +7,13 @@
     <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
     <!--    extras-->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
-
     <!--    eigen js-->
     <script src="./main/js/script.js"></script>
     <meta charset="UTF-8">
     <title>COPY van ict les</title>
 </head>
 <body>
-<a-scene physics="debug: true; gravity: -9.8; ">
+<a-scene physics="debug: true; gravity: -9.8; " vr-mode-ui="enabled: true">
     <!--camera en controls-->
     <a-entity camera look-controls>
         <a-entity
@@ -61,9 +60,9 @@
            width="0.5"
            height="0.5"
            depth="0.5"
-           color="pink">
+           color="orange">
     </a-box>
-    <a-box class="botsen"
+    <a-box class="botsen grabbable"
            dynamic-body="mass: 20"
            position="-1 10.25 -3"
            width="0.5"
@@ -71,7 +70,7 @@
            depth="0.5"
            color="green">
     </a-box>
-    <a-box class="botsen"
+    <a-box class="botsen grabbable"
            dynamic-body
            position="1 10.25 -3"
            width="0.5"
