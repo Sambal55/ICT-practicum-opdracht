@@ -14,14 +14,14 @@
     <title>COPY van ict les</title>
 </head>
 <body>
-<a-scene physics="debug: true; gravity: -9.8; " >
+<a-scene physics="debug: true; gravity: -9.8; ">
     <!--camera en controls-->
     <a-entity camera look-controls>
         <a-entity
                 input-listen
                 id="ctlL"
                 laser-controls="hand: left"
-                raycaster="lineColor: red; far:2"
+                raycaster="objects: .botsen; lineColor: red; far: 4; showLine: true"
                 static-body="shape: sphere; sphereRadius: 0.02;"
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
@@ -29,7 +29,7 @@
         <a-entity
                 input-listen id="ctlR"
                 laser-controls="hand: right"
-                raycaster="lineColor: blue; far:2"
+                raycaster="objects: .botsen; lineColor: blue; far: 2"
                 static-body="shape: sphere; sphereRadius: 0.02;"
                 sphere-collider="objects: .botsen;"></a-entity>
     </a-entity>
