@@ -1,51 +1,56 @@
-AFRAME.registerComponent('grabber', {
+AFRAME.registerComponent("input-listen", {
     init: function () {
-        this.grabbed = null;
-        this.lastHit = null;
+        let lastHit = null;
 
-        // Debugger ophalen
-        const debugEl = document.querySelector("#debugDisplay");
-
-        // Raycaster-intersection opslaan
+        // Wordt geactiveerd zodra raycaster iets raakt
         this.el.addEventListener("raycaster-intersection", (e) => {
             const hits = e.detail.els;
             if (hits && hits.length > 0) {
-                this.lastHit = hits[0];
+                lastHit = hits[0];
+                console.log("Raycaster raakt:", lastHit.id || lastHit.className);
             }
         });
 
+        // Wordt geactiveerd zodra raycaster niets meer raakt
         this.el.addEventListener("raycaster-intersection-cleared", () => {
-            this.lastHit = null;
+            lastHit = null;
         });
 
-        // Grip indrukken
-        this.el.addEventListener("gripdown", () => {
-            if (debugEl && debugEl.components["vr-debugger"]) {
-                debugEl.components["vr-debugger"].log("✊ Grip ingedrukt");
-            }
-
-            if (this.lastHit && this.lastHit.classList.contains("grabbable")) {
-                this.grabbed = this.lastHit;
-                this.el.object3D.attach(this.grabbed.object3D);
-                if (debugEl && debugEl.components["vr-debugger"]) {
-                    debugEl.components["vr-debugger"].log("✅ Gegrepen: " + (this.grabbed.id || this.grabbed.className));
-                }
+        // Trigger indrukken
+        this.el.addEventListener("triggerdown", () => {
+            if (lastHit) {
+                console.log("Grijpt:", lastHit.id || lastHit.className);
+                lastHit.setAttribute("color", "yellow");
             } else {
-                if (debugEl && debugEl.components["vr-debugger"]) {
-                    debugEl.components["vr-debugger"].log("⚠️ Geen grabbable object geraakt bij gripdown");
-                }
+                console.log("Geen object geraakt bij triggerdown");
             }
         });
+    }
+});
+const debugEl = document.querySelector("#debugDisplay");
 
-        // Grip loslaten
-        this.el.addEventListener("gripup", () => {
+AFRAME.registerComponent('grabber', {
+    init: function () {
+        this.grabbed = null;
+    },
+    events: {
+
+        gripdown: function(evt) {
+            if (evt.currentTarget.components['raycaster'].intersections.length>0) {
+                if (debugEl && debugEl.components["vr-debugger"]) {
+                    debugEl.components["vr-debugger"].log("✊ Grip ingedrukt");
+                }
+                this.grabbed = evt.currentTarget.components['raycaster'].intersections[0].object.el;
+                evt.currentTarget.object3D.attach(this.grabbed.object3D);
+            }
+        }, gripup: function(evt) {
             if (this.grabbed) {
-                this.el.sceneEl.object3D.attach(this.grabbed.object3D);
                 if (debugEl && debugEl.components["vr-debugger"]) {
                     debugEl.components["vr-debugger"].log("🛑 Losgelaten");
                 }
+                this.el.sceneEl.object3D.attach(this.grabbed.object3D);
                 this.grabbed = null;
             }
-        });
+        }
     }
 });
