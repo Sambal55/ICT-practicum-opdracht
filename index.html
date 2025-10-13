@@ -7,6 +7,11 @@
     <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
     <!--    extras-->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
+
+    <!--    grab library-->
+    <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
+
+
     <!--    eigen js-->
     <script src="./main/js/script.js"></script>
     <meta charset="UTF-8">
@@ -15,7 +20,7 @@
 <body>
 <a-scene physics="debug: true; gravity: -9.8; " vr-mode-ui="enabled: true">
     <!--camera en controls-->
-    <a-entity camera look-controls>
+    <a-entity id="rig">
         <a-entity
                 grab
                 input-listen
@@ -38,6 +43,8 @@
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
                 sphere-collider="objects: .botsen;"></a-entity>
+        <!--        apart camera entity anders zitten raycasters op hoogte van ogen-->
+        <a-entity camera look-controls></a-entity>
     </a-entity>
 
 
