@@ -7,28 +7,37 @@ AFRAME.registerComponent('grabber', {
     events: {
 
         gripdown: function (evt) {
-            const gripPoint = evt.currentTarget.querySelector('#gripPoint');
             const rayHits = evt.currentTarget.components['raycaster'].intersections;
+            const gripPoint = evt.currentTarget.querySelector('#gripPoint');
 
             if (rayHits.length > 0) {
-                log('vasthouden');
                 this.grabbed = rayHits[0].object.el;
+
+                // Verwijder physics tijdelijk
+                this.grabbed.removeAttribute("dynamic-body");
+
+                // Attach aan gripPoint
                 gripPoint.object3D.attach(this.grabbed.object3D);
+                log('vastpakken')
             }
         }
 
-    }, gripup: function (evt) {
+
+    },gripup: function (evt) {
         if (this.grabbed) {
-            // Zet terug in de scene
+            // Zet terug in scene
             this.el.sceneEl.object3D.attach(this.grabbed.object3D);
-            log('losgelaten')
+            log('loslaten')
+
             // Heractiveer physics
-            this.grabbed.removeAttribute("dynamic-body"); // reset
-            this.grabbed.setAttribute("dynamic-body", ""); // opnieuw toevoegen
+            setTimeout(() => {
+                this.grabbed.setAttribute("dynamic-body", "");
+            }, 50);
 
             this.grabbed = null;
         }
     }
+
 
 })
 ;

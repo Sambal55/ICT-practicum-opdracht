@@ -32,7 +32,9 @@
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
                 sphere-collider="objects: .botsen;">
-            <a-entity id="gripPoint" position="0 0 -0.05"></a-entity>
+            <a-entity id="gripPoint" position="0 0 -0.05">
+                <a-sphere radius="0.01" color="red"></a-sphere>
+            </a-entity>
         </a-entity>
         <a-entity
                 debug-toggle
@@ -47,7 +49,9 @@
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
                 sphere-collider="objects: .botsen;">
-            <a-entity id="gripPoint" position="0 0 -0.05"></a-entity>
+            <a-entity id="gripPoint" position="0 0 -0.05">
+                <a-sphere radius="0.01" color="red"></a-sphere>
+            </a-entity>
 
         </a-entity>
         <a-text id="debug" position="0 1.5 -1" color="yellow" width="2" wrap-count="40" visible="false"></a-text>
@@ -75,7 +79,7 @@
            width="0.5"
            height="0.5"
            depth="0.5"
-           color="magenta">
+           color="lime">
     </a-box>
     <a-box class="botsen grabbable"
            dynamic-body="mass: 20"
