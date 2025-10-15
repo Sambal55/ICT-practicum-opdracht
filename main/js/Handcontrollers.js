@@ -1,3 +1,12 @@
+/**
+ * This file mostyly contains debug AFRAME attributs which change the statusText or
+ * can possibly change the behavior of the objects such as hover-color
+ *
+ * I was not able to make the grabbing with (hand-gestures) pinch work.
+ * So I shifted to working with controllers to be able to grab objects (index.HTML)
+ */
+
+// detect if pinch has started and ended and log this into the VR scene
 AFRAME.registerComponent('pinch-logger', {
     schema: {hand: {default: 'left'}},
     init: function () {
@@ -11,42 +20,7 @@ AFRAME.registerComponent('pinch-logger', {
     }
 });
 
-
-AFRAME.registerComponent('pinch-debug', {
-    init: function () {
-        const scene = document.querySelector('a-scene');
-        let debugText = document.getElementById('statusText');
-
-        if (!debugText) {
-            debugText = document.createElement('a-text');
-            debugText.setAttribute('id', 'statusText');
-            debugText.setAttribute('value', 'Ready');
-            debugText.setAttribute('color', 'yellow');
-            debugText.setAttribute('align', 'center');
-            debugText.setAttribute('position', '0 -0.3 -1');
-            this.el.sceneEl.camera.el.appendChild(debugText);
-        }
-
-        this.el.addEventListener('pinchstarted', () => {
-            debugText.setAttribute('value', '🤏 Pinch started (' + this.el.id + ')');
-        });
-
-        this.el.addEventListener('pinchended', () => {
-            debugText.setAttribute('value', '👋 Pinch ended (' + this.el.id + ')');
-        });
-        this.el.addEventListener('grab-start', (evt) => {
-            const grabbedEl = evt.detail.el;
-            console.log('Grabbed:', grabbedEl.id || grabbedEl.tagName);
-            debugText.setAttribute('text', 'value', `Grabbed: ${grabbedEl.id || grabbedEl.tagName}`);
-        });
-
-        this.el.addEventListener('grab-end', (evt) => {
-            const releasedEl = evt.detail.el;
-            console.log('Released:', releasedEl.id || releasedEl.tagName);
-            debugText.setAttribute('text', 'value', `Released: ${releasedEl.id || releasedEl.tagName}`);
-        });
-    }
-});
+// Changes color of object with attribute hover-color, when hovering over it
 AFRAME.registerComponent('hover-color', {
     schema: {
         color: {type: 'color', default: 'yellow'},
@@ -59,20 +33,10 @@ AFRAME.registerComponent('hover-color', {
         this.el.addEventListener('raycaster-intersected-cleared', () => {
             this.el.setAttribute('color', this.data.original);
         });
-        this.el.addEventListener('grab-start', (evt) => {
-            const grabbedEl = evt.detail.el;
-            grabbedEl.setAttribute('color', 'orange'); // object is vast
-        });
-
-        this.el.addEventListener('grab-end', (evt) => {
-            const releasedEl = evt.detail.el;
-            releasedEl.setAttribute('color', releasedEl.getAttribute('hover-color').original); // terug naar origineel
-        });
-
     }
 });
 
-
+// made for the attempt at grabbing objects, does not do anthing atm, because grabbing does not work
 AFRAME.registerComponent('grab-debug', {
     init: function () {
         const statusText = document.querySelector('#statusText');
@@ -80,13 +44,17 @@ AFRAME.registerComponent('grab-debug', {
         this.el.addEventListener('grab-start', (evt) => {
             const grabbedEl = evt.detail.el;
             console.log('Grabbed:', grabbedEl.id || grabbedEl.tagName);
-            statusText.setAttribute('text', 'value', `Grabbed: ${grabbedEl.id || grabbedEl.tagName}`);
+            statusText.setAttribute('text', 'value', `Grabbed: ${grabbedEl.id}`);
+            grabbedEl.setAttribute('color', 'orange');
+
         });
 
         this.el.addEventListener('grab-end', (evt) => {
             const releasedEl = evt.detail.el;
             console.log('Released:', releasedEl.id || releasedEl.tagName);
-            statusText.setAttribute('text', 'value', `Released: ${releasedEl.id || releasedEl.tagName}`);
+            statusText.setAttribute('text', 'value', `Released: ${releasedEl.id}`);
+            releasedEl.setAttribute('color', releasedEl.getAttribute('hover-color').original);
+
         });
     }
 });

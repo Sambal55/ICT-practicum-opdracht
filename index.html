@@ -1,65 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--    aframe-->
+    <!--    A-frame-->
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
     <!--physics-->
     <script src="https://unpkg.com/@c-frame/aframe-physics-system@4.2.2/dist/aframe-physics-system.min.js"></script>
     <!--    extras-->
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.6.0/dist/aframe-extras.min.js"></script>
-    <!--    grab library-->
+    <!--    grab library (physics extra)-->
     <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
 
-
-    <!--    eigen js-->
+    <!--    My own javascript module-->
     <script type="module" src="./main/js/script.js"></script>
     <meta charset="UTF-8">
-    <title>COPY van ict les</title>
+    <title>ICT-practicum (controller version)</title>
 </head>
 <body>
-<a-scene physics="debug: true; gravity: -9.8; " vr-mode-ui="enabled: true">
-    <!--camera en controls-->
+<a-scene physics="debug: true; gravity: -9.8;"
+         vr-mode-ui="enabled: true">
+    <!--camera and controls-->
     <a-entity id="rig">
         <a-entity
-                debug-toggle
                 grabber
                 laser-controls="hand: left"
                 meta-touch-controls="hand: left"
-                raycaster-intersections="objects: .botsen"
+                raycaster-intersections="objects: .grabbable"
                 id="ctlL"
-                raycaster="objects: .botsen; lineColor: red; far: 4; showLine: true"
+                raycaster="objects: .grabbable; lineColor: red; far: 4; showLine: true"
                 static-body="shape: sphere; sphereRadius: 0.02;"
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
-                sphere-collider="objects: .botsen;">
-            <a-entity id="gripPoint" position="0 0 -0.05">
-                <a-sphere radius="0.01" color="red"></a-sphere>
+                sphere-collider="objects: .grabbable;">
+            <a-entity id="gripPoint"
+                      position="0 0 -0.05">
             </a-entity>
         </a-entity>
         <a-entity
                 debug-toggle
                 grabber
-                raycaster-intersections="objects: .botsen"
+                raycaster-intersections="objects: .grabbable"
                 id="ctlR"
                 laser-controls="hand: right"
                 meta-touch-controls="hand: right"
-                raycaster="objects: .botsen; lineColor: blue; far: 4; showLine: true"
+                raycaster="objects: .grabbable; lineColor: blue; far: 4; showLine: true"
                 static-body="shape: sphere; sphereRadius: 0.02;"
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
-                sphere-collider="objects: .botsen;">
-            <a-entity id="gripPoint" position="0 0 -0.05">
-                <a-sphere radius="0.01" color="red"></a-sphere>
+                sphere-collider="objects: .grabbable;">
+            <a-entity id="gripPoint"
+                      position="0 0 -0.05">
             </a-entity>
-
         </a-entity>
-        <a-text id="debug" position="0 1.5 -1" color="yellow" width="2" wrap-count="40" visible="false"></a-text>
-        <!--        apart camera entity anders zitten raycasters op hoogte van ogen-->
+        <a-text id="debug"
+                position="0 1.5 -1"
+                color="yellow"
+                width="2"
+                wrap-count="40"
+                visible="false">
+        </a-text>
+        <!--        seperate camera entity, so that raycasters are not at eye level, but are coming from controllers-->
         <a-entity camera look-controls></a-entity>
     </a-entity>
 
 
-    <!--    grondvlak-->
+    <!--    ground surface-->
     <a-plane position="0 1 0"
              rotation="-90 0 0"
              width="20"
@@ -67,46 +71,54 @@
              static-body
              color="#7BC8A4">
     </a-plane>
-    <!--    static objecten-->
-    <a-box static-body position="1 2 -3" rotation="0 0 0" color="#4CC3D9"></a-box>
-    <a-box static-body animation="property: position; to: 1 8 -10; dur: 2000; easing: linear; loop: true"
+
+    <!--    static objects-->
+    <a-box static-body
+           position="1 2 -3"
+           rotation="0 0 0"
+           color="#4CC3D9">
+    </a-box>
+    <a-box static-body
+           animation="property: position; to: 1 8 -10; dur: 2000; easing: linear; loop: true"
+           color="lime"
+           id="animatedBox"
            position="0 2 -5"
-           rotation="45 0 45" src="#platform"></a-box>
-    <a-box static-body position="-1 2 -3" rotation="0 0 0" color="#4CC3D9"></a-box>
-    <a-assets>
-        <img id="platform" src="https://i.imgur.com/mYmmbrp.jpg">
-    </a-assets>
+           rotation="45 0 45">
+    </a-box>
+    <a-box static-body
+           position="-1 2 -3"
+           rotation="0 0 0"
+           color="#4CC3D9">
+    </a-box>
 
     <!--    dynamische objecten-->
-    <a-box class="botsen grabbable"
+    <a-box class="grabbable"
            dynamic-body="shape: cube; mass: 20;"
            position="0 6.25 -3"
            rotation="45 0 45"
            width="0.5"
            height="0.5"
            depth="0.5"
-           id="middle"
+           id="magentaBox"
            color="magenta">
     </a-box>
-    <a-box class="botsen grabbable"
+    <a-box class="grabbable"
            dynamic-body="mass: 20"
            position="-1 10.25 -3"
            width="0.5"
            height="0.5"
            depth="0.5"
-           id="green"
+           id="greenBox"
            color="green">
     </a-box>
-    <a-box class="botsen grabbable"
+    <a-box class="grabbable"
            dynamic-body="mass: 20;"
            position="1 10.25 -3"
            width="0.5"
            height="0.5"
            depth="0.5"
-           id="blue"
+           id="blueBox"
            color="blue"></a-box>
 </a-scene>
-
-
 </body>
 </html>
