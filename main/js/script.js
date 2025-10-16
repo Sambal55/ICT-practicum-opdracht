@@ -89,20 +89,64 @@ document.addEventListener('keydown', function (ev) {
         changeDebugMode();
     }
 });
+
+AFRAME.registerComponent('change-physics', {
+    init: function () {
+        document.addEventListener('triggerdown', () => {
+            // Check of entity een dynamic-body heeft
+            if (this.el.getAttribute('dynamic-body')) {
+                this.el.removeAttribute('dynamic-body');
+                this.el.setAttribute('static-body', '');
+                this.el.setAttribute('color', 'black');
+                log('changed to static')
+            }else if(this.el.getAttribute('static-body')){
+                this.el.removeAttribute('static-body')
+                this.el.setAttribute('dynamic-body')
+                this.el.setAttribute('color', 'lime')
+                log('changed to dynamic')
+            }
+        });
+    }
+});
+
+
 AFRAME.registerComponent("smooth-jump", {
     init: function () {
         const rig = document.querySelector("#rig");
+        const leftController = document.querySelector('#ctlL')
+        // -1 = forward, 1 is backwards and 0 is neutral
+        let direction = 0;
+
+        // read joystick input
+        leftController.addEventListener("thumbstickmoved", (e) => {
+            if (e.detail.y < -0.5) {
+                // forwards
+                direction = -1;
+            } else if (e.detail.y > 0.5) {
+                // backwards
+                direction = 1;
+            } else {
+                // no joystick input
+                direction = 0;
+            }
+        });
 
         const jumpUp = () => {
-            let pos = rig.getAttribute("position");
-            let x = pos.x;
-            let z = pos.z;
+            const pos = rig.getAttribute("position");
+            const x = pos.x;
+            const z = pos.z;
+
+            const jumpDistance = 1.5;
+            // adjust Z value according to current position, direction and jumpdistance
+            const targetZ = z + direction * jumpDistance;
+
+            // delete previously made jump animations from rig
             rig.removeAttribute("animation__jumpup");
             rig.removeAttribute("animation__jumpdown");
 
             rig.setAttribute("animation__jumpup", {
                 property: "position",
-                to: x + " 1.3 " + z,
+                to: `${x} 1.3 ${targetZ}`,
                 dur: 300,
                 easing: "easeOutQuad",
                 loop: "false"
@@ -111,7 +155,7 @@ AFRAME.registerComponent("smooth-jump", {
             setTimeout(() => {
                 rig.setAttribute("animation__jumpdown", {
                     property: "position",
-                    to: x + " 0 " + z,
+                    to: `${x} 0 ${targetZ}`,
                     dur: 300,
                     easing: "easeInQuad",
                     loop: "false"
@@ -119,13 +163,10 @@ AFRAME.registerComponent("smooth-jump", {
             }, 300);
         };
 
-        // jumping with VR
         this.el.addEventListener("abuttondown", () => {
-            log('the a button presseda')
             jumpUp();
         });
 
-        // jumping on keyboard
         window.addEventListener("keydown", (ev) => {
             if (ev.code === "Space") {
                 jumpUp();
