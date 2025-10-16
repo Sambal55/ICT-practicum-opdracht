@@ -77,6 +77,22 @@ AFRAME.registerComponent('grabber', {
         });
     }
 });
+
+// attribute for changing to debugMode with the 'x' button
+AFRAME.registerComponent("debug-toggle", {
+    init: function () {
+        this.el.addEventListener("xbuttondown", () => {
+            changeDebugMode();
+        });
+    }
+});
+
+document.addEventListener('keydown', function (ev) {
+    log("Keydown: " + ev.key)
+    if (ev.key === 'q') {
+        changeDebugMode();
+    }
+});
 AFRAME.registerComponent('change-physics', {
     init: function () {
         this.lastHit = null;
@@ -87,7 +103,7 @@ AFRAME.registerComponent('change-physics', {
                 this.lastHit = hits[0];
             }
         });
-
+        // reset lastHit
         this.el.addEventListener("raycaster-intersection-cleared", () => {
             this.lastHit = null;
         });
@@ -95,37 +111,24 @@ AFRAME.registerComponent('change-physics', {
         document.addEventListener('triggerdown', () => {
             if (!this.lastHit || !this.lastHit.classList.contains('grabbable')) return;
 
-            // Forceer volledige verwijdering van bestaande physics body uit de wereld
-            const body = this.lastHit.body;
-            if (body && body.world) {
-                body.world.removeBody(body);
-                this.lastHit.body = null;
+            if (this.lastHit.components['body']) {
+                this.lastHit.components['body'].remove(); // verwijder physics-body
             }
-
-            // Verwijder alle physics-attributen om schoon te beginnen
-            this.lastHit.removeAttribute('dynamic-body');
-            this.lastHit.removeAttribute('static-body');
-
-            // Wacht even zodat Cannon.js tijd krijgt om het object opnieuw te registreren
-            setTimeout(() => {
-                if (!this.lastHit) return; // veiligheidscheck
-
-                if (!this.lastHit.hasAttribute('static-body')) {
-                    // Als het object eerst dynamisch was → maak het statisch
-                    this.lastHit.setAttribute('static-body', { shape: 'box' });
-                    this.lastHit.setAttribute('material', 'color: black');
-                    console.log('changed to static and re-added');
-                } else {
-                    // Als het object al statisch was → maak het dynamisch
-                    this.lastHit.setAttribute('dynamic-body', { shape: 'box', mass: 20 });
-                    this.lastHit.setAttribute('material', 'color: lime');
-                    console.log('changed to dynamic and re-added');
-                }
-            }, 100);
+            if (!this.lastHit) return;
+            if (this.lastHit.hasAttribute('dynamic-body')) {
+                this.lastHit.removeAttribute('dynamic-body');
+                this.lastHit.setAttribute('static-body', {shape: 'box'});
+                this.lastHit.setAttribute('material', 'color: black');
+                console.log('changed to static');
+            } else if (this.lastHit.hasAttribute('static-body')) {
+                this.lastHit.removeAttribute('static-body');
+                this.lastHit.setAttribute('dynamic-body', {shape: 'box', mass: 20});
+                this.lastHit.setAttribute('material', 'color: lime');
+                console.log('changed to dynamic');
+            }
         });
     }
 });
-
 
 
 let direction = 0;

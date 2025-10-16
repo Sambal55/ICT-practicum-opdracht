@@ -125,30 +125,24 @@
 
     <!--    dynamische objecten-->
     <a-box class="grabbable"
+           geometry="primitive: box; width: 1; height: 1; depth: 1"
            dynamic-body="shape: box; mass: 20;"
            position="0 6.25 -3"
            rotation="45 0 45"
-           width="0.5"
-           height="0.5"
-           depth="0.5"
            id="magentaBox"
            color="magenta">
     </a-box>
     <a-box class="grabbable"
+           geometry="primitive: box; width: 1; height: 1; depth: 2"
            dynamic-body="mass: 20; shape: box;"
            position="-1 10.25 -3"
-           width="1"
-           height="1"
-           depth="2"
            id="greenBox"
            color="green">
     </a-box>
     <a-box class="grabbable"
+           geometry="primitive: box; width: 1; height: 1; depth: 2"
            dynamic-body="mass: 20; shape: box;"
            position="1 10.25 -3"
-           width="1"
-           height="1"
-           depth="2"
            id="blueBox"
            color="red"></a-box>
 </a-scene>
