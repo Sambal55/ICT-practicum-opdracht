@@ -31,8 +31,7 @@
     <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
 
     <!--camera and controls-->
-    <a-entity dynamic-body="mass: 1; shape: box"
-              position="0 2 0"
+    <a-entity kinematic-body="shape: box"
               movement-controls="controls: gamepad,keyboard,nipple; constrainToNavMesh: true"
               id="rig">
         <a-entity
@@ -88,7 +87,7 @@
              rotation="-90 0 0"
              width="20"
              height="20"
-             static-body
+             static-body="shape: box;"
              color="#7BC8A4">
     </a-plane>
 
@@ -105,17 +104,17 @@
 
 
     <!--    static objects-->
-    <a-box static-body
+    <a-box static-body="shape: box;"
            position="1 2 -6"
            rotation="0 0 0"
            color="#4CC3D9">
     </a-box>
-    <a-box static-body
+    <a-box static-body="shape: box;"
            position="-1 4 -6"
            rotation="0 0 0"
            color="#4CC3D9">
     </a-box>
-    <a-box static-body
+    <a-box static-body="shape: box;"
            id="animatedBox"
            position="0 2 2"
            color="lime"
@@ -126,7 +125,7 @@
 
     <!--    dynamische objecten-->
     <a-box class="grabbable"
-           dynamic-body="shape: cube; mass: 20;"
+           dynamic-body="shape: box; mass: 20;"
            position="0 6.25 -3"
            rotation="45 0 45"
            width="0.5"
@@ -136,7 +135,7 @@
            color="magenta">
     </a-box>
     <a-box class="grabbable"
-           dynamic-body="mass: 20"
+           dynamic-body="mass: 20; shape: box;"
            position="-1 10.25 -3"
            width="1"
            height="1"
@@ -145,13 +144,13 @@
            color="green">
     </a-box>
     <a-box class="grabbable"
-           dynamic-body="mass: 20;"
+           dynamic-body="mass: 20; shape: box;"
            position="1 10.25 -3"
            width="1"
            height="1"
            depth="2"
            id="blueBox"
-           color="blue"></a-box>
+           color="yellow"></a-box>
 </a-scene>
 </body>
 </html>
