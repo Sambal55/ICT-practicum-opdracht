@@ -94,12 +94,15 @@ AFRAME.registerComponent("smooth-jump", {
         const rig = document.querySelector("#rig");
 
         const jumpUp = () => {
+            let pos = rig.getAttribute("position");
+            let x = pos.x;
+            let z = pos.z;
             rig.removeAttribute("animation__jumpup");
             rig.removeAttribute("animation__jumpdown");
 
             rig.setAttribute("animation__jumpup", {
                 property: "position",
-                to: "0 1.3 0",
+                to: x + " 1.3 " + z,
                 dur: 300,
                 easing: "easeOutQuad",
                 loop: "false"
@@ -108,7 +111,7 @@ AFRAME.registerComponent("smooth-jump", {
             setTimeout(() => {
                 rig.setAttribute("animation__jumpdown", {
                     property: "position",
-                    to: "0 0 0",
+                    to: x + " 0 " + z,
                     dur: 300,
                     easing: "easeInQuad",
                     loop: "false"
