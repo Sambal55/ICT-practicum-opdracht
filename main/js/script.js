@@ -93,12 +93,9 @@ document.addEventListener('keydown', function (ev) {
 AFRAME.registerComponent("smooth-jump", {
     init: function () {
         const jumpUp = () => {
-
-            // delete exvisitng animations
             this.el.removeAttribute("animation__jumpup");
             this.el.removeAttribute("animation__jumpdown");
 
-            // add jump animations
             this.el.setAttribute("animation__jumpup", {
                 property: "position",
                 to: "0 1.3 0",
@@ -118,17 +115,18 @@ AFRAME.registerComponent("smooth-jump", {
             }, 300);
         };
 
-        // VR-knop (abuttondown)
-        this.el.addEventListener("abuttondown", jumpUp);
-
-        // Spatiebalk
+        // with keybaord
         window.addEventListener("keydown", (ev) => {
             if (ev.code === "Space") {
                 jumpUp();
             }
         });
+
+        // with VR
+        document.addEventListener("abuttondown", jumpUp);
     }
 });
+
 
 
 
