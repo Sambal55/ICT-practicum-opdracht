@@ -77,10 +77,8 @@ AFRAME.registerComponent('grabber', {
 // attribute for changing to debugMode with the 'x' button
 AFRAME.registerComponent("debug-toggle", {
     init: function () {
-        this.el.addEventListener("triggerdown", () => {
-
-                changeDebugMode();
-
+        this.el.addEventListener("xbuttondown", () => {
+            changeDebugMode();
         });
     }
 });
@@ -91,15 +89,15 @@ document.addEventListener('keydown', function (ev) {
         changeDebugMode();
     }
 });
-
 AFRAME.registerComponent("smooth-jump", {
     init: function () {
-        const rightHand = document.querySelector('#ctlR');
-        const jumpUp = () => {
-            this.el.removeAttribute("animation__jumpup");
-            this.el.removeAttribute("animation__jumpdown");
+        const rig = document.querySelector("#rig");
 
-            this.el.setAttribute("animation__jumpup", {
+        const jumpUp = () => {
+            rig.removeAttribute("animation__jumpup");
+            rig.removeAttribute("animation__jumpdown");
+
+            rig.setAttribute("animation__jumpup", {
                 property: "position",
                 to: "0 1.3 0",
                 dur: 300,
@@ -108,7 +106,7 @@ AFRAME.registerComponent("smooth-jump", {
             });
 
             setTimeout(() => {
-                this.el.setAttribute("animation__jumpdown", {
+                rig.setAttribute("animation__jumpdown", {
                     property: "position",
                     to: "0 0 0",
                     dur: 300,
@@ -117,21 +115,22 @@ AFRAME.registerComponent("smooth-jump", {
                 });
             }, 300);
         };
-        //
-        // // with keybaord
-        // window.addEventListener("keydown", (ev) => {
-        //     if (ev.code === "Space") {
-        //         jumpUp();
-        //     }
-        // });
 
-        // with VR
-        rightHand.addEventListener('abuttondown', () => {
-            console.log('a button pressed')
-            jumpUp()
-        })
+        // jumping with VR
+        this.el.addEventListener("abuttondown", () => {
+            log('the a button presseda')
+            jumpUp();
+        });
+
+        // jumping on keyboard
+        window.addEventListener("keydown", (ev) => {
+            if (ev.code === "Space") {
+                jumpUp();
+            }
+        });
     }
 });
+
 
 
 
