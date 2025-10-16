@@ -92,6 +92,7 @@ document.addEventListener('keydown', function (ev) {
 
 AFRAME.registerComponent("smooth-jump", {
     init: function () {
+        const rightHand = document.querySelector('#ctlR');
         const jumpUp = () => {
             this.el.removeAttribute("animation__jumpup");
             this.el.removeAttribute("animation__jumpdown");
@@ -123,7 +124,7 @@ AFRAME.registerComponent("smooth-jump", {
         });
 
         // with VR
-        document.addEventListener("abuttondown", jumpUp);
+        rightHand.addEventListener('abuttondown', jumpUp)
     }
 });
 
