@@ -74,13 +74,13 @@ AFRAME.registerComponent('grabber', {
     }
 });
 
-// attribute for changing to debugMode with the 'a' button
+// attribute for changing to debugMode with the 'x' button
 AFRAME.registerComponent("debug-toggle", {
     init: function () {
-        this.el.addEventListener("xbuttonchanged", (e) => {
-            if (e.detail.id === "x") {
+        this.el.addEventListener("triggerdown", () => {
+
                 changeDebugMode();
-            }
+
         });
     }
 });
