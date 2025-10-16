@@ -90,12 +90,10 @@ document.addEventListener('keydown', function (ev) {
         changeDebugMode();
     }
 });
-// change physics of block
 AFRAME.registerComponent('change-physics', {
     init: function () {
         this.lastHit = null;
 
-        // Luister naar raycaster-intersection
         this.el.addEventListener("raycaster-intersection", (e) => {
             const hits = e.detail.els;
             if (hits && hits.length > 0) {
@@ -103,24 +101,25 @@ AFRAME.registerComponent('change-physics', {
             }
         });
 
-        // Luister naar triggerdown
         document.addEventListener('triggerdown', () => {
+            if (!this.lastHit.classList.contains('grabbable')) return;
             if (!this.lastHit) return;
 
             if (this.lastHit.hasAttribute('dynamic-body')) {
                 this.lastHit.removeAttribute('dynamic-body');
-                this.lastHit.setAttribute('static-body', '');
+                this.lastHit.setAttribute('static-body', {shape: 'box'});
                 this.lastHit.setAttribute('material', 'color: black');
                 console.log('changed to static');
             } else if (this.lastHit.hasAttribute('static-body')) {
                 this.lastHit.removeAttribute('static-body');
-                this.lastHit.setAttribute('dynamic-body', '');
+                this.lastHit.setAttribute('dynamic-body', {shape: 'box', mass: 20});
                 this.lastHit.setAttribute('material', 'color: lime');
                 console.log('changed to dynamic');
             }
         });
     }
 });
+
 
 let direction = 0;
 let lastDirection = 0;
@@ -142,8 +141,6 @@ AFRAME.registerComponent('joystick-direction', {
         });
     }
 });
-
-
 
 
 AFRAME.registerComponent("smooth-jump", {
