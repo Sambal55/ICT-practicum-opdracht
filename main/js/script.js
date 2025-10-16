@@ -78,7 +78,7 @@ AFRAME.registerComponent('grabber', {
     }
 });
 
-// attribute for changing to debugMode with the 'x' button
+// attribute for changing to debugMode with the 'x' button with VR
 AFRAME.registerComponent("debug-toggle", {
     init: function () {
         this.el.addEventListener("xbuttondown", () => {
@@ -87,12 +87,18 @@ AFRAME.registerComponent("debug-toggle", {
     }
 });
 
+// method for changing to debug mode on desktop
 document.addEventListener('keydown', function (ev) {
     log("Keydown: " + ev.key)
     if (ev.key === 'q') {
         changeDebugMode();
     }
 });
+/**
+ * for this method it was supposed to work so that a player could stand on boxes when they were in static state
+ * And this method works in that way very well. It changes dynamic boxes to static boxes and vice versa.
+ * But when you jump onto a static boc, you dont get on top of the box but get inside the box, which is not the point.
+ */
 AFRAME.registerComponent('change-physics', {
     init: function () {
         this.lastHit = null;
@@ -118,12 +124,10 @@ AFRAME.registerComponent('change-physics', {
             if (this.lastHit.hasAttribute('dynamic-body')) {
                 this.lastHit.removeAttribute('dynamic-body');
                 this.lastHit.setAttribute('static-body', {shape: 'box'});
-                this.lastHit.setAttribute('nav-mesh')
                 this.lastHit.setAttribute('material', 'color: black');
                 console.log('changed to static');
             } else if (this.lastHit.hasAttribute('static-body')) {
                 this.lastHit.removeAttribute('static-body');
-                this.lastHit.removeAttribute('nav-mesh')
                 this.lastHit.setAttribute('dynamic-body', {shape: 'box', mass: 20});
                 this.lastHit.setAttribute('material', 'color: lime');
                 console.log('changed to dynamic');
@@ -133,34 +137,38 @@ AFRAME.registerComponent('change-physics', {
 });
 
 
-let direction = 0;
 let lastDirection = 0;
 
+/**
+ * This method is for checking the direction of the joystick so that when a player jumps
+ * the lastDirection is the direction in which the player is going to jump when pressing the a button
+ */
 AFRAME.registerComponent('joystick-direction', {
     init: function () {
         log('gaat in joystick-direction')
         this.el.addEventListener("thumbstickmoved", (e) => {
             if (e.detail.y < -0.5) {
-                direction = -1;
                 lastDirection = -1;
             } else if (e.detail.y > 0.5) {
-                direction = 1;
                 lastDirection = 1;
-            } else {
-                direction = 0;
-                // lastDirection blijft behouden
             }
+            // last direction is preserved
         });
     }
 });
 
-
+/**
+ * This component makes sure that the player can jump
+ * It has accounted for the direction of the joystick, the current position values
+ * and what direction the camera faces.
+ *
+ * It uses an animation to make the jump smoother looking.
+ */
 AFRAME.registerComponent("smooth-jump", {
     init: function () {
         const rig = document.querySelector("#rig");
         const camera = document.querySelector("[camera]");
         const jumpUp = () => {
-            console.log(lastDirection, ' DIRECTIE')
             const rigPosition = rig.getAttribute("position");
             // camera rotation
             const camDir = new THREE.Vector3();
@@ -173,10 +181,11 @@ AFRAME.registerComponent("smooth-jump", {
             const targetX = rigPosition.x + directionX;
             const targetZ = rigPosition.z + directionZ;
 
-
+            // delete so that the animation doesnt already excist
             rig.removeAttribute("animation__jumpup");
             rig.removeAttribute("animation__jumpdown");
 
+            // UP animation
             rig.setAttribute("animation__jumpup", {
                 property: "position",
                 to: `${targetX} 2 ${targetZ}`,
@@ -185,6 +194,7 @@ AFRAME.registerComponent("smooth-jump", {
                 loop: "false"
             });
 
+            // down animation
             setTimeout(() => {
                 rig.setAttribute("animation__jumpdown", {
                     property: "position",
@@ -196,10 +206,12 @@ AFRAME.registerComponent("smooth-jump", {
             }, 300);
         };
 
+        // for VR
         this.el.addEventListener("abuttondown", () => {
             jumpUp();
         });
 
+        // for desktop
         window.addEventListener("keydown", (ev) => {
             if (ev.code === "Space") {
                 jumpUp();
