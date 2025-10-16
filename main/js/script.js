@@ -77,7 +77,7 @@ AFRAME.registerComponent('grabber', {
 // attribute for changing to debugMode with the 'a' button
 AFRAME.registerComponent("debug-toggle", {
     init: function () {
-        this.el.addEventListener("abuttondown", () => {
+        this.el.addEventListener("xbuttondown", () => {
             changeDebugMode();
         });
     }
@@ -89,6 +89,50 @@ document.addEventListener('keydown', function (ev) {
         changeDebugMode();
     }
 });
+
+AFRAME.registerComponent("smooth-jump", {
+    init: function () {
+        const jumpUp = () => {
+
+            // delete exvisitng animations
+            this.el.removeAttribute("animation__jumpup");
+            this.el.removeAttribute("animation__jumpdown");
+
+            // add jump animations
+            this.el.setAttribute("animation__jumpup", {
+                property: "position",
+                to: "0 1.3 0",
+                dur: 300,
+                easing: "easeOutQuad",
+                loop: "false"
+            });
+
+            setTimeout(() => {
+                this.el.setAttribute("animation__jumpdown", {
+                    property: "position",
+                    to: "0 0 0",
+                    dur: 300,
+                    easing: "easeInQuad",
+                    loop: "false"
+                });
+            }, 300);
+        };
+
+        // VR-knop (abuttondown)
+        this.el.addEventListener("abuttondown", jumpUp);
+
+        // Spatiebalk
+        window.addEventListener("keydown", (ev) => {
+            if (ev.code === "Space") {
+                jumpUp();
+            }
+        });
+    }
+});
+
+
+
+
 
 
 
