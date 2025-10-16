@@ -7,6 +7,7 @@ import {changeDebugMode, log} from './logger.js';
  * to use the same ID because you're referring to this.el (the controller), and you're looking for #gripPoint there.
  * So this approach works for both the left and right controllers.
  */
+
 AFRAME.registerComponent('grabber', {
     init: function () {
         this.grabbed = null;
@@ -89,64 +90,77 @@ document.addEventListener('keydown', function (ev) {
         changeDebugMode();
     }
 });
-
+// change physics of block
 AFRAME.registerComponent('change-physics', {
     init: function () {
+        let hitBox;
+        this.el.addEventListener("raycaster-intersection", (e) => {
+            hitBox = e.detail.els;
+        });
         document.addEventListener('triggerdown', () => {
-            // Check of entity een dynamic-body heeft
-            if (this.el.getAttribute('dynamic-body')) {
-                this.el.removeAttribute('dynamic-body');
-                this.el.setAttribute('static-body', '');
-                this.el.setAttribute('color', 'black');
+            if (hitBox.getAttribute('dynamic-body')) {
+                hitBox.removeAttribute('dynamic-body');
+                hitBox.setAttribute('static-body', '');
+                hitBox.setAttribute('color', 'black');
                 log('changed to static')
-            }else if(this.el.getAttribute('static-body')){
-                this.el.removeAttribute('static-body')
-                this.el.setAttribute('dynamic-body')
-                this.el.setAttribute('color', 'lime')
+            } else if (this.el.getAttribute('static-body')) {
+                hitBox.removeAttribute('static-body')
+                hitBox.setAttribute('dynamic-body')
+                hitBox.setAttribute('color', 'lime')
                 log('changed to dynamic')
+            }
+        });
+    }
+});
+let direction = 0;
+let lastDirection = 0;
+
+AFRAME.registerComponent('joystick-direction', {
+    init: function () {
+        log('gaat in joystick-direction')
+        this.el.addEventListener("thumbstickmoved", (e) => {
+            if (e.detail.y < -0.5) {
+                direction = -1;
+                lastDirection = -1;
+            } else if (e.detail.y > 0.5) {
+                direction = 1;
+                lastDirection = 1;
+            } else {
+                direction = 0;
+                // lastDirection blijft behouden
             }
         });
     }
 });
 
 
+
+
 AFRAME.registerComponent("smooth-jump", {
     init: function () {
         const rig = document.querySelector("#rig");
-        const leftController = document.querySelector('#ctlL')
-        // -1 = forward, 1 is backwards and 0 is neutral
-        let direction = 0;
-
-        // read joystick input
-        leftController.addEventListener("thumbstickmoved", (e) => {
-            if (e.detail.y < -0.5) {
-                // forwards
-                direction = -1;
-            } else if (e.detail.y > 0.5) {
-                // backwards
-                direction = 1;
-            } else {
-                // no joystick input
-                direction = 0;
-            }
-        });
-
+        const camera = document.querySelector("[camera]");
         const jumpUp = () => {
-            const pos = rig.getAttribute("position");
-            const x = pos.x;
-            const z = pos.z;
+            console.log(lastDirection, ' DIRECTIE')
+            const rigPosition = rig.getAttribute("position");
+            // camera rotation
+            const camDir = new THREE.Vector3();
+            camera.object3D.getWorldDirection(camDir);
+            const jumpDistance = 1.7;
 
-            const jumpDistance = 1.5;
-            // adjust Z value according to current position, direction and jumpdistance
-            const targetZ = z + direction * jumpDistance;
+            const directionX = camDir.x * lastDirection * jumpDistance;
+            const directionZ = camDir.z * lastDirection * jumpDistance;
 
-            // delete previously made jump animations from rig
+            const targetX = rigPosition.x + directionX;
+            const targetZ = rigPosition.z + directionZ;
+
+
             rig.removeAttribute("animation__jumpup");
             rig.removeAttribute("animation__jumpdown");
 
             rig.setAttribute("animation__jumpup", {
                 property: "position",
-                to: `${x} 1.3 ${targetZ}`,
+                to: `${targetX} 2 ${targetZ}`,
                 dur: 300,
                 easing: "easeOutQuad",
                 loop: "false"
@@ -155,7 +169,7 @@ AFRAME.registerComponent("smooth-jump", {
             setTimeout(() => {
                 rig.setAttribute("animation__jumpdown", {
                     property: "position",
-                    to: `${x} 0 ${targetZ}`,
+                    to: `${targetX} 0 ${targetZ}`,
                     dur: 300,
                     easing: "easeInQuad",
                     loop: "false"
@@ -174,6 +188,7 @@ AFRAME.registerComponent("smooth-jump", {
         });
     }
 });
+
 
 
 

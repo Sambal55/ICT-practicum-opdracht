@@ -11,8 +11,8 @@
     <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.min.js"></script>
     <!-- Environment -->
     <script src="https://unpkg.com/aframe-environment-component@1.3.x/dist/aframe-environment-component.min.js"></script>
-<!--    &lt;!&ndash;    jump library&ndash;&gt;-->
-<!--    <script src="https://cdn.jsdelivr.net/gh/daniel-schroeder-dev/aframe-jump/jump.js"></script>-->
+    <!--    &lt;!&ndash;    jump library&ndash;&gt;-->
+    <!--    <script src="https://cdn.jsdelivr.net/gh/daniel-schroeder-dev/aframe-jump/jump.js"></script>-->
 
     <!--    My own javascript module-->
     <script type="module" src="./main/js/script.js"></script>
@@ -37,6 +37,8 @@
         <a-entity
                 grabber
                 debug-toggle
+                change-physics
+                joystick-direction
                 laser-controls="hand: left"
                 meta-touch-controls="hand: left"
                 raycaster-intersections="objects: .grabbable"
@@ -53,6 +55,7 @@
         <a-entity
                 grabber
                 smooth-jump
+                change-physics
                 raycaster-intersections="objects: .grabbable"
                 id="ctlR"
                 laser-controls="hand: right"
@@ -79,7 +82,8 @@
 
 
     <!--    ground surface-->
-    <a-plane position="0 0.1 0"
+    <a-plane class="ground"
+             position="0 0.1 0"
              rotation="-90 0 0"
              width="20"
              height="20"
@@ -123,7 +127,6 @@
     <a-box class="grabbable"
            dynamic-body="shape: cube; mass: 20;"
            position="0 6.25 -3"
-           change-physics
            rotation="45 0 45"
            width="0.5"
            height="0.5"
@@ -132,7 +135,6 @@
            color="magenta">
     </a-box>
     <a-box class="grabbable"
-           change-physics
            dynamic-body="mass: 20"
            position="-1 10.25 -3"
            width="1"
@@ -142,7 +144,6 @@
            color="green">
     </a-box>
     <a-box class="grabbable"
-           change-physics
            dynamic-body="mass: 20;"
            position="1 10.25 -3"
            width="1"
