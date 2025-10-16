@@ -109,7 +109,11 @@ AFRAME.registerComponent('change-physics', {
         });
 
         document.addEventListener('triggerdown', () => {
-            if (!this.lastHit.classList.contains('grabbable')) return;
+            if (!this.lastHit || !this.lastHit.classList.contains('grabbable')) return;
+
+            if (this.lastHit.components['body']) {
+                this.lastHit.components['body'].remove(); // verwijder physics-body
+            }
             if (!this.lastHit) return;
             if (this.lastHit.hasAttribute('dynamic-body')) {
                 this.lastHit.removeAttribute('dynamic-body');
