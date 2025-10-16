@@ -95,9 +95,14 @@ AFRAME.registerComponent('change-physics', {
     init: function () {
         let hitBox;
         this.el.addEventListener("raycaster-intersection", (e) => {
-            hitBox = e.detail.els;
+            if (e.detail.els.length > 0) {
+                hitBox = e.detail.els[0];
+                console.log('Hit:', hitBox.getAttribute('id'));
+            }
         });
         document.addEventListener('triggerdown', () => {
+            if (!hitBox) return;
+            
             if (hitBox.getAttribute('dynamic-body')) {
                 hitBox.removeAttribute('dynamic-body');
                 hitBox.setAttribute('static-body', '');
