@@ -115,13 +115,13 @@ AFRAME.registerComponent("smooth-jump", {
                 });
             }, 300);
         };
-
-        // with keybaord
-        window.addEventListener("keydown", (ev) => {
-            if (ev.code === "Space") {
-                jumpUp();
-            }
-        });
+        //
+        // // with keybaord
+        // window.addEventListener("keydown", (ev) => {
+        //     if (ev.code === "Space") {
+        //         jumpUp();
+        //     }
+        // });
 
         // with VR
         rightHand.addEventListener('abuttondown', jumpUp)
