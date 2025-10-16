@@ -34,8 +34,12 @@ AFRAME.registerComponent('grabber', {
                 return;
             }
 
-            // Check if an object can be grabbed and attach to gripPoint (raycaster)
-            if (this.lastHit && this.lastHit.classList.contains("grabbable")) {
+            // Check if object is grabbable AND dynamic
+            if (
+                this.lastHit &&
+                this.lastHit.classList.contains("grabbable") &&
+                this.lastHit.hasAttribute("dynamic-body")
+            ) {
                 this.grabbed = this.lastHit;
 
                 // De-activate physics
@@ -43,10 +47,9 @@ AFRAME.registerComponent('grabber', {
                 gripPoint.object3D.attach(this.grabbed.object3D);
                 log("Grabbed: " + (this.grabbed.id || this.grabbed.className));
             } else {
-                log("Object is not in class: grabbable");
+                log("Object is not grabbable or not dynamic");
             }
         });
-
 
         this.el.addEventListener("gripup", () => {
             if (!this.grabbed) {
@@ -100,11 +103,14 @@ AFRAME.registerComponent('change-physics', {
                 this.lastHit = hits[0];
             }
         });
+        // reset lastHit
+        this.el.addEventListener("raycaster-intersection-cleared", () => {
+            this.lastHit = null;
+        });
 
         document.addEventListener('triggerdown', () => {
             if (!this.lastHit.classList.contains('grabbable')) return;
             if (!this.lastHit) return;
-
             if (this.lastHit.hasAttribute('dynamic-body')) {
                 this.lastHit.removeAttribute('dynamic-body');
                 this.lastHit.setAttribute('static-body', {shape: 'box'});
