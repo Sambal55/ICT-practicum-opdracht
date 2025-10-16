@@ -77,22 +77,6 @@ AFRAME.registerComponent('grabber', {
         });
     }
 });
-
-// attribute for changing to debugMode with the 'x' button
-AFRAME.registerComponent("debug-toggle", {
-    init: function () {
-        this.el.addEventListener("xbuttondown", () => {
-            changeDebugMode();
-        });
-    }
-});
-
-document.addEventListener('keydown', function (ev) {
-    log("Keydown: " + ev.key)
-    if (ev.key === 'q') {
-        changeDebugMode();
-    }
-});
 AFRAME.registerComponent('change-physics', {
     init: function () {
         this.lastHit = null;
@@ -103,7 +87,7 @@ AFRAME.registerComponent('change-physics', {
                 this.lastHit = hits[0];
             }
         });
-        // reset lastHit
+
         this.el.addEventListener("raycaster-intersection-cleared", () => {
             this.lastHit = null;
         });
@@ -111,24 +95,29 @@ AFRAME.registerComponent('change-physics', {
         document.addEventListener('triggerdown', () => {
             if (!this.lastHit || !this.lastHit.classList.contains('grabbable')) return;
 
+            // Verwijder physics-body component
             if (this.lastHit.components['body']) {
-                this.lastHit.components['body'].remove(); // verwijder physics-body
+                this.lastHit.components['body'].remove();
             }
-            if (!this.lastHit) return;
-            if (this.lastHit.hasAttribute('dynamic-body')) {
-                this.lastHit.removeAttribute('dynamic-body');
-                this.lastHit.setAttribute('static-body', {shape: 'box'});
-                this.lastHit.setAttribute('material', 'color: black');
-                console.log('changed to static');
-            } else if (this.lastHit.hasAttribute('static-body')) {
-                this.lastHit.removeAttribute('static-body');
-                this.lastHit.setAttribute('dynamic-body', {shape: 'box', mass: 20});
-                this.lastHit.setAttribute('material', 'color: lime');
-                console.log('changed to dynamic');
-            }
+
+            // Wacht even zodat Cannon.js tijd krijgt om te resetten
+            setTimeout(() => {
+                if (this.lastHit.hasAttribute('dynamic-body')) {
+                    this.lastHit.removeAttribute('dynamic-body');
+                    this.lastHit.setAttribute('static-body', { shape: 'box' });
+                    this.lastHit.setAttribute('material', 'color: black');
+                    console.log('changed to static');
+                } else if (this.lastHit.hasAttribute('static-body')) {
+                    this.lastHit.removeAttribute('static-body');
+                    this.lastHit.setAttribute('dynamic-body', { shape: 'box', mass: 20 });
+                    this.lastHit.setAttribute('material', 'color: lime');
+                    console.log('changed to dynamic');
+                }
+            }, 50); // 50ms vertraging helpt de physics-engine
         });
     }
 });
+
 
 
 let direction = 0;
