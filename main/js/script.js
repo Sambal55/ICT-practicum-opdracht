@@ -118,12 +118,12 @@ AFRAME.registerComponent('change-physics', {
             if (this.lastHit.hasAttribute('dynamic-body')) {
                 this.lastHit.removeAttribute('dynamic-body');
                 this.lastHit.setAttribute('static-body', {shape: 'box'});
-                this.lastHit.setAttribute('nav-mesh')
+                // this.lastHit.setAttribute('nav-mesh')
                 this.lastHit.setAttribute('material', 'color: black');
                 console.log('changed to static');
             } else if (this.lastHit.hasAttribute('static-body')) {
                 this.lastHit.removeAttribute('static-body');
-                this.lastHit.removeAttribute('nav-mesh')
+                // this.lastHit.removeAttribute('nav-mesh')
                 this.lastHit.setAttribute('dynamic-body', {shape: 'box', mass: 20});
                 this.lastHit.setAttribute('material', 'color: lime');
                 console.log('changed to dynamic');
