@@ -54,7 +54,6 @@ AFRAME.registerComponent('grab-debug', {
             console.log('Released:', releasedEl.id || releasedEl.tagName);
             statusText.setAttribute('text', 'value', `Released: ${releasedEl.id}`);
             releasedEl.setAttribute('color', releasedEl.getAttribute('hover-color').original);
-
         });
     }
 });

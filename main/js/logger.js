@@ -16,18 +16,14 @@ export function log(msg) {
 export function changeDebugMode() {
     debugMode = !debugMode;
     const debugElement = document.querySelector('#debug');
-    const forwardVideo = document.querySelector('#timeStamp');
-    const reverseVideo = document.querySelector('#reverseTimeStamp');
-
+    const rig = document.querySelector('#rig')
+    let rigPosition = rig.getAttribute('position')
     if (!debugMode) {
         debugElement?.setAttribute('visible', 'false');
-        forwardVideo?.setAttribute('visible', 'false');
-        reverseVideo?.setAttribute('visible', 'false');
         log("Debug mode OFF");
     } else {
         debugElement?.setAttribute('visible', 'true');
-        forwardVideo?.setAttribute('visible', 'true');
-        reverseVideo?.setAttribute('visible', 'true');
+        log(JSON.stringify(rigPosition));
         log("Debug mode ON");
     }
 }

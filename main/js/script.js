@@ -83,3 +83,12 @@ AFRAME.registerComponent("debug-toggle", {
     }
 });
 
+document.addEventListener('keydown', function (ev) {
+    log("Keydown: " + ev.key)
+    if (ev.key === 'q') {
+        changeDebugMode();
+    }
+});
+
+
+
