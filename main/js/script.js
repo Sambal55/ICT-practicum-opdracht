@@ -77,8 +77,10 @@ AFRAME.registerComponent('grabber', {
 // attribute for changing to debugMode with the 'a' button
 AFRAME.registerComponent("debug-toggle", {
     init: function () {
-        this.el.addEventListener("xbuttondown", () => {
-            changeDebugMode();
+        this.el.addEventListener("xbuttonchanged", (e) => {
+            if (e.detail.id === "x") {
+                changeDebugMode();
+            }
         });
     }
 });
@@ -124,7 +126,10 @@ AFRAME.registerComponent("smooth-jump", {
         // });
 
         // with VR
-        rightHand.addEventListener('abuttondown', jumpUp)
+        rightHand.addEventListener('abuttondown', () => {
+            console.log('a button pressed')
+            jumpUp()
+        })
     }
 });
 
