@@ -94,54 +94,34 @@ document.addEventListener('keydown', function (ev) {
 AFRAME.registerComponent('change-physics', {
     init: function () {
         this.lastHit = null;
+
+        // Luister naar raycaster-intersection
         this.el.addEventListener("raycaster-intersection", (e) => {
             const hits = e.detail.els;
             if (hits && hits.length > 0) {
                 this.lastHit = hits[0];
             }
         });
+
+        // Luister naar triggerdown
         document.addEventListener('triggerdown', () => {
             if (!this.lastHit) return;
 
-            if (this.lastHit.getAttribute('dynamic-body')) {
+            if (this.lastHit.hasAttribute('dynamic-body')) {
                 this.lastHit.removeAttribute('dynamic-body');
                 this.lastHit.setAttribute('static-body', '');
-                this.lastHit.setAttribute('color', 'black');
-                log('changed to static')
-            } else if (AFRAME.registerComponent('change-physics', {
-                init: function () {
-                    this.lastHit = null;
-                    this.el.addEventListener("raycaster-intersection", (e) => {
-                        const hits = e.detail.els;
-                        if (hits && hits.length > 0) {
-                            this.lastHit = hits[0];
-                        }
-                    });
-                    document.addEventListener('triggerdown', () => {
-                        if (!this.lastHit) return;
-
-                        if (this.lastHit.getAttribute('dynamic-body')) {
-                            this.lastHit.removeAttribute('dynamic-body');
-                            this.lastHit.setAttribute('static-body', '');
-                            this.lastHit.setAttribute('color', 'black');
-                            log('changed to static')
-                        } else if (this.el.getAttribute('static-body')) {
-                            this.lastHit.removeAttribute('static-body')
-                            this.lastHit.setAttribute('dynamic-body')
-                            this.lastHit.setAttribute('color', 'lime')
-                            log('changed to dynamic')
-                        }
-                    });
-                }
-            });.getAttribute('static-body')) {
-                this.lastHit.removeAttribute('static-body')
-                this.lastHit.setAttribute('dynamic-body')
-                this.lastHit.setAttribute('color', 'lime')
-                log('changed to dynamic')
+                this.lastHit.setAttribute('material', 'color: black');
+                console.log('changed to static');
+            } else if (this.lastHit.hasAttribute('static-body')) {
+                this.lastHit.removeAttribute('static-body');
+                this.lastHit.setAttribute('dynamic-body', '');
+                this.lastHit.setAttribute('material', 'color: lime');
+                console.log('changed to dynamic');
             }
         });
     }
 });
+
 let direction = 0;
 let lastDirection = 0;
 
