@@ -160,7 +160,7 @@ AFRAME.registerComponent('joystick-direction', {
  * It has accounted for the direction of the joystick, the current position values
  * and what direction the camera faces.
  *
- * It uses an animation to make the jump smoother looking.
+ * It uses animations to make the jump smoother looking.
  */
 AFRAME.registerComponent("smooth-jump", {
     init: function () {
@@ -179,7 +179,7 @@ AFRAME.registerComponent("smooth-jump", {
             const targetX = rigPosition.x + directionX;
             const targetZ = rigPosition.z + directionZ;
 
-            // delete so that the animation doesnt already excist
+            // delete so that the animation doesnt already exist
             rig.removeAttribute("animation__jumpup");
             rig.removeAttribute("animation__jumpdown");
 
@@ -217,13 +217,3 @@ AFRAME.registerComponent("smooth-jump", {
         });
     }
 });
-
-
-
-
-
-
-
-
-
-
