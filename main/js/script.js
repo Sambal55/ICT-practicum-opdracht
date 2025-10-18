@@ -125,12 +125,12 @@ AFRAME.registerComponent('change-physics', {
                 this.lastHit.removeAttribute('dynamic-body');
                 this.lastHit.setAttribute('static-body', {shape: 'box'});
                 this.lastHit.setAttribute('material', 'color: black');
-                console.log('changed to static');
+                log('changed to static');
             } else if (this.lastHit.hasAttribute('static-body')) {
                 this.lastHit.removeAttribute('static-body');
                 this.lastHit.setAttribute('dynamic-body', {shape: 'box', mass: 20});
                 this.lastHit.setAttribute('material', 'color: lime');
-                console.log('changed to dynamic');
+                log('changed to dynamic');
             }
         });
     }
@@ -145,7 +145,6 @@ let lastDirection = 0;
  */
 AFRAME.registerComponent('joystick-direction', {
     init: function () {
-        log('gaat in joystick-direction')
         this.el.addEventListener("thumbstickmoved", (e) => {
             if (e.detail.y < -0.5) {
                 lastDirection = -1;

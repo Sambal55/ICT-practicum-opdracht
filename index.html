@@ -45,7 +45,7 @@
                 meta-touch-controls="hand: left"
                 raycaster-intersections="objects: .grabbable"
                 id="ctlL"
-                raycaster="objects: .grabbable; lineColor: red; far: 4; showLine: true"
+                raycaster="objects: .grabbable; lineColor: yellow; far: 4; showLine: true"
                 static-body="shape: sphere; sphereRadius: 0.02;"
                 geometry="primitive: sphere; radius: 0.02"
                 material="color: yellow; opacity: 0.5"
@@ -112,17 +112,17 @@
     <a-box static-body="shape: box;"
            position="1 2 -6"
            rotation="0 0 0"
-           color="black">
+           color="red">
     </a-box>
     <a-box static-body="shape: box;"
            position="-1 4 -6"
            rotation="0 0 0"
-           color="black">
+           color="red">
     </a-box>
     <a-box static-body="shape: box;"
            id="animatedBox"
            position="0 2 2"
-           color="lime"
+           color="red"
            rotation="0 0 0"
            animation__up="property: position; to: 0 8 -5; dur: 1000; easing: easeOutQuad; dir: alternate; loop: true">
     </a-box>
@@ -135,14 +135,14 @@
            position="-4.1 1 -6.3"
            rotation="90 0 0"
            id="magentaBox"
-           color="magenta">
+           color="lime">
     </a-box>
     <a-box class="grabbable"
            geometry="primitive: box; width: 1; height: 1; depth: 2"
            dynamic-body="mass: 20; shape: box;"
            position="8.3 1 3.5"
            id="orangeBox"
-           color="orange">
+           color="lime">
     </a-box>
     <a-box class="grabbable"
            geometry="primitive: box; width: 1; height: 1; depth: 2"
@@ -150,7 +150,7 @@
            rotation="90 0 0"
            position="4.5 1 6.3"
            id="blueBox"
-           color="blue"></a-box>
+           color="lime"></a-box>
 </a-scene>
 </body>
 </html>

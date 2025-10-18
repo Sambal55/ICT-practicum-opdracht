@@ -16,14 +16,11 @@ export function log(msg) {
 export function changeDebugMode() {
     debugMode = !debugMode;
     const debugElement = document.querySelector('#debug');
-    const rig = document.querySelector('#rig')
-    let rigPosition = rig.getAttribute('position')
     if (!debugMode) {
         debugElement?.setAttribute('visible', 'false');
         log("Debug mode OFF");
     } else {
         debugElement?.setAttribute('visible', 'true');
-        log(JSON.stringify(rigPosition));
         log("Debug mode ON");
     }
 }
