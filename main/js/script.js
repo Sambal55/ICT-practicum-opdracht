@@ -7,7 +7,6 @@ import {changeDebugMode, log} from './logger.js';
  * to use the same ID because you're referring to this.el (the controller), and you're looking for #gripPoint there.
  * So this approach works for both the left and right controllers.
  */
-
 AFRAME.registerComponent('grabber', {
     init: function () {
         this.grabbed = null;
