@@ -20,16 +20,19 @@
     <title>ICT-practicum (controller version)</title>
 </head>
 <body>
-<a-scene physics="debug: true; gravity: -9.8;"
+<a-scene physics="gravity: -9.8;"
          vr-mode-ui="enabled: true">
     <!--    assets-->
     <a-asset-item id="navmesh"
                   src="https://c-frame.github.io/aframe-extras/examples/assets/castle/Castle-navmesh.glb"></a-asset-item>
     <a-asset-item id="castle"
                   src="https://c-frame.github.io/aframe-extras/examples/assets/castle/Castle.glb"></a-asset-item>
+    <a-assets>
+        <img id="cobblestone" src="main/resources/cobblestone.jpg">
+    </a-assets>
+
     <!-- environment -->
     <a-entity environment="preset: forest; groundColor: #445; grid: cross"></a-entity>
-
     <!--camera and controls-->
     <a-entity kinematic-body
               movement-controls="controls: gamepad,keyboard,nipple; constrainToNavMesh: true" id="rig">
@@ -82,12 +85,13 @@
 
     <!--    ground surface-->
     <a-plane id="ground"
+             src="#cobblestone"
              position="0 0.1 0"
              rotation="-90 0 0"
              width="20"
              height="20"
              static-body
-             color="#7BC8A4">
+             material="src: #cobblestone; repeat: 10 10;  shader: flat">
     </a-plane>
 
     <!-- Nav mesh. -->
@@ -95,23 +99,25 @@
               normal-material
               visible="false"
               position="5 0 0"
+              id="navmesh"
               gltf-model="#navmesh"></a-entity>
-    <!-- Kasteel -->
+    <!-- castle -->
     <a-entity position="5 0 0"
               scale="3 3 3"
-              gltf-model="#castle"></a-entity>
+              gltf-model="#castle"
+              static-body></a-entity>
 
 
     <!--    static objects-->
     <a-box static-body="shape: box;"
            position="1 2 -6"
            rotation="0 0 0"
-           color="#4CC3D9">
+           color="black">
     </a-box>
     <a-box static-body="shape: box;"
            position="-1 4 -6"
            rotation="0 0 0"
-           color="#4CC3D9">
+           color="black">
     </a-box>
     <a-box static-body="shape: box;"
            id="animatedBox"
@@ -124,24 +130,25 @@
 
     <!--    dynamische objecten-->
     <a-box class="grabbable"
-           geometry="primitive: box; width: 1; height: 1; depth: 1"
+           geometry="primitive: box; width: 1; height: 1; depth: 2"
            dynamic-body="shape: box; mass: 20;"
-           position="0 6.25 -3"
-           rotation="45 0 45"
+           position="-4.1 1 -6.3"
+           rotation="90 0 0"
            id="magentaBox"
            color="magenta">
     </a-box>
     <a-box class="grabbable"
            geometry="primitive: box; width: 1; height: 1; depth: 2"
            dynamic-body="mass: 20; shape: box;"
-           position="-1 10.25 -3"
-           id="greenBox"
-           color="green">
+           position="8.3 1 3.5"
+           id="orangeBox"
+           color="orange">
     </a-box>
     <a-box class="grabbable"
            geometry="primitive: box; width: 1; height: 1; depth: 2"
            dynamic-body="mass: 20; shape: box;"
-           position="1 10.25 -3"
+           rotation="90 0 0"
+           position="4.5 1 6.3"
            id="blueBox"
            color="blue"></a-box>
 </a-scene>
